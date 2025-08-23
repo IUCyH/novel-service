@@ -1,17 +1,18 @@
 package com.iucyh.novelservice.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @MappedSuperclass
 @Getter
-public abstract class BaseDateEntity {
+public abstract class BaseDateEntity extends BaseEntity {
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -22,10 +23,6 @@ public abstract class BaseDateEntity {
     private LocalDateTime updatedAt;
 
     private LocalDateTime deletedAt;
-
-    protected static String generatePublicId() {
-        return UUID.randomUUID().toString().replace("-", "");
-    }
 
     public void softDelete() {
         this.deletedAt = LocalDateTime.now();

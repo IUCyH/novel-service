@@ -12,13 +12,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Novel extends BaseDateEntity {
 
-    @Id
-    @GeneratedValue
-    private Integer novelId;
-
-    @Column(nullable = false, updatable = false, length = 32)
-    private String novelPublicId = generatePublicId();
-
     @Column(nullable = false, length = 64)
     private String title;
 

@@ -13,13 +13,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Episode extends BaseDateEntity {
 
-    @Id
-    @GeneratedValue
-    private Integer episodeId;
-
-    @Column(nullable = false, updatable = false, length = 32)
-    private String episodePublicId = generatePublicId();
-
     @Column(nullable = false, length = 32)
     private String title;
 
