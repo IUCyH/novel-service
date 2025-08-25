@@ -2,6 +2,7 @@ package com.iucyh.novelservice.dto.novel;
 
 import com.iucyh.novelservice.domain.novel.NovelCategory;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
@@ -16,5 +17,6 @@ public class CreateNovelDto {
     @Length(max = 32)
     private String description;
 
+    @NotNull(message = "Invalid category value")
     private NovelCategory category;
 }
