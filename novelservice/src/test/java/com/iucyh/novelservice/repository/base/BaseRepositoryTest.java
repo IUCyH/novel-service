@@ -18,7 +18,7 @@ public class BaseRepositoryTest {
     private TestRepository testRepository;
 
     @Test
-    @DisplayName("test의 publicId로 id 조회 - 성공")
+    @DisplayName("test의 publicId로 entity 조회 - 성공")
     void findByPublicIdWithSuccess() {
         // given
         TestEntity testEntity = new TestEntity("test1");
@@ -33,7 +33,7 @@ public class BaseRepositoryTest {
     }
 
     @Test
-    @DisplayName("test의 publicId로 id 조회 - 실패")
+    @DisplayName("test의 publicId로 entity 조회 - 실패")
     void findByPublicIdWithFail() {
         // given
         TestEntity testEntity = new TestEntity("test1");
