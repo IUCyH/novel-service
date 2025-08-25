@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum CommonErrorCode implements ErrorCode {
 
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON-500"),
-    BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON-400");
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON-5001"),
+    VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "COMMON-4001");
 
     private final HttpStatus status;
     private final String code;
