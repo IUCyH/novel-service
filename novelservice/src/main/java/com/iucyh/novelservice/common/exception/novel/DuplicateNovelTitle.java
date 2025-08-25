@@ -8,7 +8,7 @@ public class DuplicateNovelTitle extends ServiceException {
 
     public DuplicateNovelTitle(String title) {
         super(
-                NovelErrorCode.TITLE_DUPLICATE,
+                NovelErrorCode.DUPLICATE_TITLE,
                 "This title already exists",
                 Map.of("title", title)
         );

@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum NovelErrorCode implements ErrorCode {
 
-    TITLE_DUPLICATE(HttpStatus.BAD_REQUEST, "NOVEL-4001");
+    DUPLICATE_TITLE(HttpStatus.BAD_REQUEST, "NOVEL-4001");
 
     private final HttpStatus status;
     private final String code;
