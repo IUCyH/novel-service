@@ -15,7 +15,7 @@ public enum NovelCategory {
     ETC;
 
     @JsonCreator
-    public static NovelCategory from(String value) {
+    public static NovelCategory of(String value) {
         return Arrays.stream(NovelCategory.values())
                 .filter(category -> category.name().equals(value))
                 .findAny()
