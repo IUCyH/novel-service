@@ -1,6 +1,6 @@
 package com.iucyh.novelservice.common.constant;
 
-public abstract class NovelConstant {
+public abstract class NovelConstants {
 
     public static final int NOVEL_TITLE_LENGTH_MIN = 1;
     public static final int NOVEL_TITLE_LENGTH_MAX = 64;

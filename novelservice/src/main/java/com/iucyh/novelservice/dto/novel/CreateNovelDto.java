@@ -6,15 +6,17 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
+import static com.iucyh.novelservice.common.constant.NovelConstants.*;
+
 @Getter
 public class CreateNovelDto {
 
     @NotEmpty
-    @Length(min = 1, max = 64)
+    @Length(min = NOVEL_TITLE_LENGTH_MIN, max = NOVEL_TITLE_LENGTH_MAX)
     private String title;
 
     @NotEmpty
-    @Length(max = 32)
+    @Length(max = NOVEL_DESC_LENGTH_MAX)
     private String description;
 
     @NotNull(message = "Invalid category value")

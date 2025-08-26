@@ -6,16 +6,18 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static com.iucyh.novelservice.common.constant.NovelConstants.*;
+
 @Entity
 @Table(name = "novels")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Novel extends BaseDateEntity {
 
-    @Column(nullable = false, length = 64)
+    @Column(nullable = false, length = NOVEL_TITLE_LENGTH_MAX)
     private String title;
 
-    @Column(nullable = false, length = 32)
+    @Column(nullable = false, length = NOVEL_DESC_LENGTH_MAX)
     private String description;
 
     @Column(nullable = false)
