@@ -4,13 +4,13 @@ import com.iucyh.novelservice.common.exception.ServiceException;
 
 import java.util.Map;
 
-public class DuplicateNovelTitle extends ServiceException {
+public class NovelNotFound extends ServiceException {
 
-    public DuplicateNovelTitle(String title) {
+    public NovelNotFound(String publicId) {
         super(
-                NovelErrorCode.DUPLICATE_TITLE,
-                "This title already exists",
-                Map.of("title", title)
+                NovelErrorCode.NOVEL_NOT_FOUND,
+                "Novel not found with this public id",
+                Map.of("novelId", publicId)
         );
     }
 }
