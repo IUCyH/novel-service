@@ -18,7 +18,7 @@ public class NovelService {
 
     private final NovelRepository novelRepository;
 
-    public IdDto createNovel(long userId, CreateNovelDto createNovelDto) {
+    public IdDto createNovel(CreateNovelDto createNovelDto) {
         String title = createNovelDto.getTitle();
         String description = createNovelDto.getDescription();
         NovelCategory category = createNovelDto.getCategory();
