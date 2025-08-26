@@ -1,6 +1,7 @@
 package com.iucyh.novelservice.service.novel;
 
 import com.iucyh.novelservice.common.exception.novel.DuplicateNovelTitle;
+import com.iucyh.novelservice.common.exception.novel.NovelNotFound;
 import com.iucyh.novelservice.domain.novel.Novel;
 import com.iucyh.novelservice.domain.novel.NovelCategory;
 import com.iucyh.novelservice.dto.IdDto;
@@ -30,5 +31,15 @@ public class NovelService {
         Novel newNovel = Novel.of(title, description, category);
         novelRepository.save(newNovel);
         return new IdDto(newNovel.getPublicId());
+    }
+
+    public void deleteNovel(long userId, String publicId) {
+        Novel novel = findNovelWithUserId(userId, publicId);
+        novel.softDelete();
+    }
+
+    private Novel findNovelWithUserId(long userId, String publicId) {
+        return novelRepository.findByPublicId(publicId)
+                .orElseThrow(() -> new NovelNotFound(publicId));
     }
 }
