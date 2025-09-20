@@ -1,6 +1,6 @@
 package com.iucyh.novelservice.domain.episode;
 
-import com.iucyh.novelservice.domain.BaseDateEntity;
+import com.iucyh.novelservice.domain.PublicEntity;
 import com.iucyh.novelservice.domain.novel.Novel;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -13,7 +13,11 @@ import static com.iucyh.novelservice.common.constant.EpisodeConstants.*;
 @Table(name = "episodes")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Episode extends BaseDateEntity {
+public class Episode extends PublicEntity {
+
+    @Id
+    @GeneratedValue
+    private Long id;
 
     @Column(nullable = false, length = EPISODE_TITLE_LENGTH_MAX)
     private String title;
