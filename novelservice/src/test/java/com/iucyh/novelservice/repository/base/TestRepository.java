@@ -1,6 +1,6 @@
 package com.iucyh.novelservice.repository.base;
 
-import com.iucyh.novelservice.repository.BaseRepository;
+import com.iucyh.novelservice.repository.PublicEntityRepository;
 
-public interface TestRepository extends BaseRepository<TestEntity, Long> {
+public interface TestRepository extends PublicEntityRepository<TestEntity, Long> {
 }
