@@ -32,7 +32,7 @@ public class Episode extends PublicEntity {
     private Integer episodeNumber;
 
     @Column(nullable = false)
-    private Integer watchCount = 0;
+    private Integer viewCount = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "novel_id", nullable = false)

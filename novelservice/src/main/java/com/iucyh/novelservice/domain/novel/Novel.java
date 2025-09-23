@@ -30,7 +30,7 @@ public class Novel extends PublicEntity {
     private Integer likeCount = 0;
 
     @Column(nullable = false)
-    private Integer totalWatchCount = 0;
+    private Integer totalViewCount = 0;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
