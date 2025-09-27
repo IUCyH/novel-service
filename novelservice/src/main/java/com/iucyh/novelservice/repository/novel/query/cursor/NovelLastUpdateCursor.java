@@ -3,10 +3,12 @@ package com.iucyh.novelservice.repository.novel.query.cursor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @RequiredArgsConstructor
-public class NovelLikeCountCursor implements NovelCursor {
+public class NovelLastUpdateCursor implements NovelCursor {
 
     private final long lastNovelId;
-    private final int lastLikeCount;
+    private final LocalDateTime lastUpdateDate;
 }

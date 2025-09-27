@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class NovelPopularCursor implements NovelCursor {
+public class NovelViewCountCursor implements NovelCursor {
 
-    private final long lastAggId;
-    private final int lastAggViewCount;
+    private final long lastNovelId;
+    private final int lastTotalViewCount;
 }
