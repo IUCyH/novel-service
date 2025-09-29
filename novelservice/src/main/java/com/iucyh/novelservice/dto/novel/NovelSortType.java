@@ -1,4 +1,4 @@
-package com.iucyh.novelservice.service.novel;
+package com.iucyh.novelservice.dto.novel;
 
 import com.iucyh.novelservice.repository.novel.query.cursor.*;
 
