@@ -6,4 +6,5 @@ import com.iucyh.novelservice.repository.PublicEntityRepository;
 public interface NovelRepository extends PublicEntityRepository<Novel, Long> {
 
     boolean existsByTitle(String title);
+    long countByDeletedAtIsNull();
 }
