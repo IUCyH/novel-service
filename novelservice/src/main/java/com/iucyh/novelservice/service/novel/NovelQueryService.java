@@ -50,6 +50,28 @@ public class NovelQueryService {
                 );
     }
 
+    /**
+     * 카테고리 별 소설을 인기순 상위 10개만 조회하는 메서드
+     */
+    public List<NovelDto> findNovelsByCategoryInSummary(NovelCategory category) {
+        NovelSearchCondition searchCondition = new NovelSearchCondition(null);
+        NovelPagingQuery pagingQuery = getPagingQuery(NovelSortType.POPULAR);
+        List<? extends NovelPagingQueryDto> novels = novelQueryRepository.findNovelsByCategory(searchCondition, pagingQuery, category, 10);
+
+        return mapToNovelDtoList(novels);
+    }
+
+    /**
+     * 이번 달 신작 소설을 업데이트순 상위 30개만 조회하는 메서드
+     */
+    public List<NovelDto> findNewNovelsInSummary() {
+        NovelSearchCondition searchCondition = new NovelSearchCondition(null);
+        NovelPagingQuery pagingQuery = getPagingQuery(NovelSortType.LAST_UPDATE);
+        List<? extends NovelPagingQueryDto> novels = novelQueryRepository.findNewNovels(searchCondition, pagingQuery, 30);
+
+        return mapToNovelDtoList(novels);
+    }
+
     public PagingResultDto<NovelDto> findNovels(NovelPagingRequestDto pagingRequest) {
         Integer limit = pagingRequest.getLimit();
         return executePagingQuery(pagingRequest,
