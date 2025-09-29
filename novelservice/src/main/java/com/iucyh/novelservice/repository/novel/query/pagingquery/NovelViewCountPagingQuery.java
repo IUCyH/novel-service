@@ -1,21 +1,24 @@
 package com.iucyh.novelservice.repository.novel.query.pagingquery;
 
 import com.iucyh.novelservice.domain.novel.Novel;
-import com.iucyh.novelservice.dto.novel.query.NovelSimpleQueryDto;
+import com.iucyh.novelservice.dto.novel.query.NovelPagingQueryDto;
 import com.iucyh.novelservice.dto.novel.query.QNovelSimpleQueryDto;
+import com.iucyh.novelservice.repository.novel.query.cursor.NovelCursor;
 import com.iucyh.novelservice.repository.novel.query.cursor.NovelViewCountCursor;
-import com.iucyh.novelservice.service.novel.NovelSortType;
+import com.iucyh.novelservice.dto.novel.NovelSortType;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.stereotype.Component;
 
 import static com.iucyh.novelservice.domain.novel.QNovel.novel;
 
-public class NovelViewCountPagingQuery extends NovelPagingQueryBaseTemplate<NovelViewCountCursor, NovelSimpleQueryDto> {
+@Component
+public class NovelViewCountPagingQuery extends NovelPagingQueryBaseTemplate {
 
     @Override
-    protected JPAQuery<NovelSimpleQueryDto> createBaseQuery(JPAQueryFactory queryFactory, NovelViewCountCursor cursor) {
+    protected JPAQuery<? extends NovelPagingQueryDto> createBaseQuery(JPAQueryFactory queryFactory, NovelCursor cursor) {
         return queryFactory
                 .select(new QNovelSimpleQueryDto(novel))
                 .from(novel);
@@ -30,16 +33,17 @@ public class NovelViewCountPagingQuery extends NovelPagingQueryBaseTemplate<Nove
     }
 
     @Override
-    protected BooleanExpression createCursorPredicate(NovelViewCountCursor cursor) {
-        return novel.totalViewCount.lt(cursor.getLastTotalViewCount())
+    protected BooleanExpression createCursorPredicate(NovelCursor cursor) {
+        NovelViewCountCursor novelViewCountCursor = (NovelViewCountCursor) cursor;
+        return novel.totalViewCount.lt(novelViewCountCursor.getLastTotalViewCount())
                 .or(
-                        novel.totalViewCount.eq(cursor.getLastTotalViewCount())
-                                .and(novel.id.lt(cursor.getLastNovelId()))
+                        novel.totalViewCount.eq(novelViewCountCursor.getLastTotalViewCount())
+                                .and(novel.id.lt(novelViewCountCursor.getLastNovelId()))
                 );
     }
 
     @Override
-    public NovelViewCountCursor createCursor(NovelSimpleQueryDto lastResult) {
+    public NovelCursor createCursor(NovelPagingQueryDto lastResult) {
         Novel lastNovel = lastResult.getNovel();
         return new NovelViewCountCursor(lastNovel.getId(), lastNovel.getTotalViewCount());
     }

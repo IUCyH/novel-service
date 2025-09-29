@@ -11,12 +11,12 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
  * <p>가장 일반적인 패턴의 <b>Novel 페이징 쿼리 생성을 돕는 템플릿 클래스</b></p>
  * 기본쿼리.where(커서 적용).orderBy 패턴이라면 해당 클래스 상속 권장
  */
-public abstract class NovelPagingQueryBaseTemplate<T extends NovelCursor, R extends NovelPagingQueryDto> implements NovelPagingQuery<T, R> {
+public abstract class NovelPagingQueryBaseTemplate implements NovelPagingQuery {
 
     /**
      * 정렬 조건, 커서 적용 을 제외한 <b>select/from 등 기본 쿼리 생성 메서드</b>
      */
-    protected abstract JPAQuery<R> createBaseQuery(JPAQueryFactory queryFactory, T cursor);
+    protected abstract JPAQuery<? extends NovelPagingQueryDto> createBaseQuery(JPAQueryFactory queryFactory, NovelCursor cursor);
 
     /**
      * 각 페이징 전략에 맞는 정렬 기준 생성 메서드
@@ -26,11 +26,11 @@ public abstract class NovelPagingQueryBaseTemplate<T extends NovelCursor, R exte
     /**
      * 커서가 적용된 predicate 생성 메서드
      */
-    protected abstract BooleanExpression createCursorPredicate(T cursor);
+    protected abstract BooleanExpression createCursorPredicate(NovelCursor cursor);
 
     @Override
-    public JPAQuery<R> createQuery(JPAQueryFactory queryFactory, T cursor) {
-        JPAQuery<R> query = createBaseQuery(queryFactory, cursor)
+    public JPAQuery<? extends NovelPagingQueryDto> createQuery(JPAQueryFactory queryFactory, NovelCursor cursor) {
+        JPAQuery<? extends NovelPagingQueryDto> query = createBaseQuery(queryFactory, cursor)
                 .orderBy(
                         createOrderSpecifiers()
                 );
@@ -42,7 +42,7 @@ public abstract class NovelPagingQueryBaseTemplate<T extends NovelCursor, R exte
         return query;
     }
 
-    private boolean isNotFirstPage(T cursor) {
+    private boolean isNotFirstPage(NovelCursor cursor) {
         return cursor != null;
     }
 }

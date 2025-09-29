@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class NovelSearchCondition<T extends NovelCursor> {
+public class NovelSearchCondition {
 
-    private final T cursor;
+    private final NovelCursor cursor;
 }

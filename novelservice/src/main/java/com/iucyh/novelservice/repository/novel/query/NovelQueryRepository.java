@@ -9,24 +9,11 @@ import java.util.List;
 
 public interface NovelQueryRepository {
 
-    <T extends NovelCursor, R extends NovelPagingQueryDto> List<R> findNovels(
-            NovelSearchCondition<T> condition,
-            NovelPagingQuery<T, R> pagingQuery,
-            int limit
-    );
-    <T extends NovelCursor, R extends NovelPagingQueryDto> List<R> findNovelsByCategory(
-            NovelSearchCondition<T> condition,
-            NovelPagingQuery<T, R> pagingQuery,
-            NovelCategory category,
-            int limit
-    );
+    List<? extends NovelPagingQueryDto> findNovels(NovelSearchCondition condition, NovelPagingQuery pagingQuery, int limit);
+    List<? extends NovelPagingQueryDto> findNovelsByCategory(NovelSearchCondition condition, NovelPagingQuery pagingQuery, NovelCategory category, int limit);
 
     /**
      * 이번달 신작 소설 조회 메서드
      */
-    <T extends NovelCursor, R extends NovelPagingQueryDto> List<R> findNewNovels(
-            NovelSearchCondition<T> condition,
-            NovelPagingQuery<T, R> pagingQuery,
-            int limit
-    );
+    List<? extends NovelPagingQueryDto> findNewNovels(NovelSearchCondition condition, NovelPagingQuery pagingQuery, int limit);
 }

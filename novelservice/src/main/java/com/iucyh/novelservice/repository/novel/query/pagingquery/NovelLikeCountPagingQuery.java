@@ -1,21 +1,24 @@
 package com.iucyh.novelservice.repository.novel.query.pagingquery;
 
 import com.iucyh.novelservice.domain.novel.Novel;
-import com.iucyh.novelservice.dto.novel.query.NovelSimpleQueryDto;
+import com.iucyh.novelservice.dto.novel.query.NovelPagingQueryDto;
 import com.iucyh.novelservice.dto.novel.query.QNovelSimpleQueryDto;
+import com.iucyh.novelservice.repository.novel.query.cursor.NovelCursor;
 import com.iucyh.novelservice.repository.novel.query.cursor.NovelLikeCountCursor;
-import com.iucyh.novelservice.service.novel.NovelSortType;
+import com.iucyh.novelservice.dto.novel.NovelSortType;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.stereotype.Component;
 
 import static com.iucyh.novelservice.domain.novel.QNovel.novel;
 
-public class NovelLikeCountPagingQuery extends NovelPagingQueryBaseTemplate<NovelLikeCountCursor, NovelSimpleQueryDto> {
+@Component
+public class NovelLikeCountPagingQuery extends NovelPagingQueryBaseTemplate {
 
     @Override
-    protected JPAQuery<NovelSimpleQueryDto> createBaseQuery(JPAQueryFactory queryFactory, NovelLikeCountCursor cursor) {
+    protected JPAQuery<? extends NovelPagingQueryDto> createBaseQuery(JPAQueryFactory queryFactory, NovelCursor cursor) {
         return queryFactory
                 .select(new QNovelSimpleQueryDto(novel))
                 .from(novel);
@@ -30,16 +33,17 @@ public class NovelLikeCountPagingQuery extends NovelPagingQueryBaseTemplate<Nove
     }
 
     @Override
-    protected BooleanExpression createCursorPredicate(NovelLikeCountCursor cursor) {
-        return novel.likeCount.lt(cursor.getLastLikeCount())
+    protected BooleanExpression createCursorPredicate(NovelCursor cursor) {
+        NovelLikeCountCursor likeCountCursor = (NovelLikeCountCursor) cursor;
+        return novel.likeCount.lt(likeCountCursor.getLastLikeCount())
                 .or(
-                        novel.likeCount.eq(cursor.getLastLikeCount())
-                                .and(novel.id.lt(cursor.getLastNovelId()))
+                        novel.likeCount.eq(likeCountCursor.getLastLikeCount())
+                                .and(novel.id.lt(likeCountCursor.getLastNovelId()))
                 );
     }
 
     @Override
-    public NovelLikeCountCursor createCursor(NovelSimpleQueryDto lastResult) {
+    public NovelCursor createCursor(NovelPagingQueryDto lastResult) {
         Novel lastNovel = lastResult.getNovel();
         return new NovelLikeCountCursor(lastNovel.getId(), lastNovel.getLikeCount());
     }

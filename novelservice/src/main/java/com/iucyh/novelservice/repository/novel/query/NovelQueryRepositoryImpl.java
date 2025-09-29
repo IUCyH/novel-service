@@ -22,11 +22,7 @@ public class NovelQueryRepositoryImpl implements NovelQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public <T extends NovelCursor, R extends NovelPagingQueryDto> List<R> findNovels(
-            NovelSearchCondition<T> condition,
-            NovelPagingQuery<T, R> pagingQuery,
-            int limit
-    ) {
+    public List<? extends NovelPagingQueryDto> findNovels(NovelSearchCondition condition, NovelPagingQuery pagingQuery, int limit) {
         return pagingQuery
                 .createQuery(queryFactory, condition.getCursor())
                 .where(novel.deletedAt.isNull())
@@ -35,12 +31,7 @@ public class NovelQueryRepositoryImpl implements NovelQueryRepository {
     }
 
     @Override
-    public <T extends NovelCursor, R extends NovelPagingQueryDto> List<R> findNovelsByCategory(
-            NovelSearchCondition<T> condition,
-            NovelPagingQuery<T, R> pagingQuery,
-            NovelCategory category,
-            int limit
-    ) {
+    public List<? extends NovelPagingQueryDto> findNovelsByCategory(NovelSearchCondition condition, NovelPagingQuery pagingQuery, NovelCategory category, int limit) {
         return pagingQuery
                 .createQuery(queryFactory, condition.getCursor())
                 .where(
@@ -52,11 +43,7 @@ public class NovelQueryRepositoryImpl implements NovelQueryRepository {
     }
 
     @Override
-    public <T extends NovelCursor, R extends NovelPagingQueryDto> List<R> findNewNovels(
-            NovelSearchCondition<T> condition,
-            NovelPagingQuery<T, R> pagingQuery,
-            int limit
-    ) {
+    public List<? extends NovelPagingQueryDto> findNewNovels(NovelSearchCondition condition, NovelPagingQuery pagingQuery, int limit) {
         LocalDateTime thisMonth = getThisMonth();
         return pagingQuery
                 .createQuery(queryFactory, condition.getCursor())
