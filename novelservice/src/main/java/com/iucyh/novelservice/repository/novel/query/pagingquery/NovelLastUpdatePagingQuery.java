@@ -18,7 +18,7 @@ import static com.iucyh.novelservice.domain.novel.QNovel.novel;
 public class NovelLastUpdatePagingQuery extends NovelPagingQueryBaseTemplate {
 
     @Override
-    protected JPAQuery<? extends NovelPagingQueryDto> createBaseQuery(JPAQueryFactory queryFactory, NovelCursor cursor) {
+    protected JPAQuery<? extends NovelPagingQueryDto> createBaseQuery(JPAQueryFactory queryFactory) {
         return queryFactory
                 .select(new QNovelSimpleQueryDto(novel))
                 .from(novel);

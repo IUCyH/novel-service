@@ -21,7 +21,7 @@ import static com.iucyh.novelservice.domain.novel.QNovelPeriodView.novelPeriodVi
 public class NovelPopularPagingQuery extends NovelPagingQueryBaseTemplate {
 
     @Override
-    protected JPAQuery<? extends NovelPagingQueryDto> createBaseQuery(JPAQueryFactory queryFactory, NovelCursor cursor) {
+    protected JPAQuery<? extends NovelPagingQueryDto> createBaseQuery(JPAQueryFactory queryFactory) {
         LocalDate threeDaysAgo = LocalDate.now().minusDays(3);
         return queryFactory
                 .select(
