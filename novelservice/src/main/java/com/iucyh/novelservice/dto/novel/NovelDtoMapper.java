@@ -11,7 +11,7 @@ public class NovelDtoMapper {
 
     public static NovelDto toNovelDto(Novel novel) {
         return new NovelDto(
-                novel.getPublicId(),
+                novel.getPublicId().toString(),
                 novel.getTitle(),
                 novel.getDescription(),
                 novel.getLikeCount(),
@@ -24,5 +24,9 @@ public class NovelDtoMapper {
 
     public static PagingResultDto<NovelDto> toPagingResultDto(List<NovelDto> novels, long totalCount, String encodedCursor) {
         return new PagingResultDto<>(totalCount, encodedCursor, novels);
+    }
+
+    public static Novel toNovelEntity(CreateNovelDto novelDto) {
+        return Novel.of(novelDto.getTitle(), novelDto.getDescription(), novelDto.getCategory());
     }
 }

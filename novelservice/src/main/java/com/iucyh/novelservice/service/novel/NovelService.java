@@ -6,10 +6,13 @@ import com.iucyh.novelservice.domain.novel.Novel;
 import com.iucyh.novelservice.domain.novel.NovelCategory;
 import com.iucyh.novelservice.dto.IdDto;
 import com.iucyh.novelservice.dto.novel.CreateNovelDto;
+import com.iucyh.novelservice.dto.novel.NovelDtoMapper;
 import com.iucyh.novelservice.repository.novel.NovelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -20,26 +23,26 @@ public class NovelService {
 
     public IdDto createNovel(CreateNovelDto createNovelDto) {
         String title = createNovelDto.getTitle();
-        String description = createNovelDto.getDescription();
-        NovelCategory category = createNovelDto.getCategory();
-
         boolean isDuplicateTitle = novelRepository.existsByTitle(title);
+
         if (isDuplicateTitle) {
             throw new DuplicateNovelTitle(title);
         }
 
-        Novel newNovel = Novel.of(title, description, category);
+        Novel newNovel = NovelDtoMapper.toNovelEntity(createNovelDto);
         novelRepository.save(newNovel);
-        return new IdDto(newNovel.getPublicId());
+
+        String newPublicId = newNovel.getPublicId().toString();
+        return new IdDto(newPublicId);
     }
 
-    public void deleteNovel(long userId, String publicId) {
+    public void deleteNovel(long userId, UUID publicId) {
         Novel novel = findNovelWithUserId(userId, publicId);
         novel.softDelete();
     }
 
-    private Novel findNovelWithUserId(long userId, String publicId) {
+    private Novel findNovelWithUserId(long userId, UUID publicId) {
         return novelRepository.findByPublicId(publicId)
-                .orElseThrow(() -> new NovelNotFound(publicId));
+                .orElseThrow(() -> new NovelNotFound(publicId.toString()));
     }
 }
