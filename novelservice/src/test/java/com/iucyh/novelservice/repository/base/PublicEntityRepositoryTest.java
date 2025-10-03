@@ -1,5 +1,6 @@
 package com.iucyh.novelservice.repository.base;
 
+import com.fasterxml.uuid.Generators;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -40,7 +42,8 @@ public class PublicEntityRepositoryTest {
         testRepository.save(testEntity);
 
         // when
-        Optional<TestEntity> result = testRepository.findByPublicId("unknown");
+        UUID wrongPublicId = Generators.timeBasedEpochGenerator().generate();
+        Optional<TestEntity> result = testRepository.findByPublicId(wrongPublicId);
 
         // then
         assertThat(result).isEmpty();

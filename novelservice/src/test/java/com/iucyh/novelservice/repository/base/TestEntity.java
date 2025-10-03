@@ -1,5 +1,9 @@
 package com.iucyh.novelservice.repository.base;
 
+import com.fasterxml.uuid.Generators;
+import com.fasterxml.uuid.UUIDGenerator;
+import com.iucyh.novelservice.domain.PublicEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -7,13 +11,11 @@ import jakarta.persistence.Id;
 import java.util.UUID;
 
 @Entity
-public class TestEntity {
+public class TestEntity extends PublicEntity {
 
     @Id
     @GeneratedValue
     private Long id;
-
-    private String publicId = UUID.randomUUID().toString().replace("-", "");
 
     private String name;
 
@@ -27,8 +29,8 @@ public class TestEntity {
         return id;
     }
 
-    public String getPublicId() {
-        return publicId;
+    public UUID getPublicId() {
+        return super.getPublicId();
     }
 
     public String getName() {
