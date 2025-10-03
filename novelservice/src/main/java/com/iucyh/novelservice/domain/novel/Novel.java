@@ -36,7 +36,7 @@ public class Novel extends PublicEntity {
     @Enumerated(EnumType.STRING)
     private NovelCategory category;
 
-    @Column(nullable = false)
+    @Column
     private LocalDateTime lastEpisodeAt;
 
     public static Novel of(String title, String description, NovelCategory category) {
@@ -45,5 +45,43 @@ public class Novel extends PublicEntity {
         novel.description = description;
         novel.category = category;
         return novel;
+    }
+
+    public void updateTextMetaData(String title, String description) {
+        if (title != null && !title.isBlank()) {
+            this.title = title;
+        }
+
+        if (description != null) {
+            this.description = description;
+        }
+    }
+
+    public void updateCategory(NovelCategory category) {
+        if (category != null) {
+            this.category = category;
+        }
+    }
+
+    public void addLikes(int count) {
+        if (count > 0) {
+            this.likeCount += count;
+        }
+    }
+
+    public void removeLikes(int count) {
+        if (count > 0) {
+            this.likeCount = Math.max(0, this.likeCount - count);
+        }
+    }
+
+    public void addViews(int count) {
+        if (count > 0) {
+            this.totalViewCount += count;
+        }
+    }
+
+    public void updateLastEpisodeAt(LocalDateTime lastEpisodeAt) {
+        this.lastEpisodeAt = lastEpisodeAt == null ? LocalDateTime.now() : lastEpisodeAt;
     }
 }
