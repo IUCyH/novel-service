@@ -7,6 +7,7 @@ import com.iucyh.novelservice.domain.novel.NovelCategory;
 import com.iucyh.novelservice.dto.IdDto;
 import com.iucyh.novelservice.dto.novel.CreateNovelDto;
 import com.iucyh.novelservice.dto.novel.NovelDtoMapper;
+import com.iucyh.novelservice.dto.novel.UpdateNovelDto;
 import com.iucyh.novelservice.repository.novel.NovelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,14 @@ public class NovelService {
 
         String newPublicId = newNovel.getPublicId().toString();
         return new IdDto(newPublicId);
+    }
+
+    public void updateNovel(long userId, UUID publicId, UpdateNovelDto novelDto) {
+        Novel novel = findNovelWithUserId(userId, publicId);
+        NovelCategory newCategory = NovelCategory.of(novelDto.getCategory());
+
+        novel.updateTextMetaData(novelDto.getTitle(), novelDto.getDescription());
+        novel.updateCategory(newCategory);
     }
 
     public void deleteNovel(long userId, UUID publicId) {
