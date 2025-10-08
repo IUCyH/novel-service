@@ -1,24 +1,39 @@
 package com.iucyh.novelservice.domain.novel;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
-import java.util.Arrays;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum NovelCategory {
 
-    FANTASY,
-    ROMANCE,
-    HORROR,
-    SF,
-    SPORTS,
-    LIFE,
-    ETC;
+    FANTASY("fantasy"),
+    ROMANCE("romance"),
+    HORROR("horror"),
+    SF("sf"),
+    SPORTS("sports"),
+    LIFE("life"),
+    ETC("etc");
 
-    @JsonCreator
+    private final String value;
+
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
+
+    NovelCategory(String value) {
+        this.value = value;
+    }
+
     public static NovelCategory of(String value) {
-        return Arrays.stream(NovelCategory.values())
-                .filter(category -> category.name().equals(value))
-                .findAny()
-                .orElse(null);
+        if (value == null || value.isBlank()) return null;
+
+        for (NovelCategory category : values()) {
+            boolean isValueMatch = category.getValue().equalsIgnoreCase(value);
+            boolean isNameMatch = category.name().equalsIgnoreCase(value);
+
+            if (isValueMatch || isNameMatch) {
+                return category;
+            }
+        }
+        return null;
     }
 }
