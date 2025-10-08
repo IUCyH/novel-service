@@ -100,8 +100,8 @@ public class NovelQueryService {
             NovelPagingRequestDto pagingRequest,
             BiFunction<NovelSearchCondition, NovelPagingQuery, List<? extends NovelPagingQueryDto>> queryFunc
     ) {
-        NovelSortType sortType = pagingRequest.getSort();
         String cursor = pagingRequest.getCursor();
+        NovelSortType sortType = NovelSortType.of(pagingRequest.getSort());
 
         NovelPagingQuery pagingQuery = getPagingQuery(sortType);
         NovelSearchCondition searchCondition = createSearchCondition(sortType, cursor);
