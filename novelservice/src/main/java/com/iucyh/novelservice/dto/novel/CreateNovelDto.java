@@ -1,5 +1,6 @@
 package com.iucyh.novelservice.dto.novel;
 
+import com.iucyh.novelservice.common.validator.enumfield.EnumField;
 import com.iucyh.novelservice.domain.novel.NovelCategory;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -19,6 +20,7 @@ public class CreateNovelDto {
     @Length(max = NOVEL_DESC_LENGTH_MAX)
     private String description;
 
-    @NotNull(message = "Invalid category value")
-    private NovelCategory category;
+    @NotNull
+    @EnumField(enumClass = NovelCategory.class)
+    private String category;
 }
