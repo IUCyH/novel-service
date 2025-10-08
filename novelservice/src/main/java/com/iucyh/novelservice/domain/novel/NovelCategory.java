@@ -14,13 +14,13 @@ public enum NovelCategory {
 
     private final String value;
 
+    NovelCategory(String value) {
+        this.value = value;
+    }
+
     @JsonValue
     public String getValue() {
         return value;
-    }
-
-    NovelCategory(String value) {
-        this.value = value;
     }
 
     public static NovelCategory of(String value) {
