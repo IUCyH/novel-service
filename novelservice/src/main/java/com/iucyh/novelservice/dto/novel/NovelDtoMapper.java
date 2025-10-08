@@ -1,6 +1,7 @@
 package com.iucyh.novelservice.dto.novel;
 
 import com.iucyh.novelservice.domain.novel.Novel;
+import com.iucyh.novelservice.domain.novel.NovelCategory;
 import com.iucyh.novelservice.dto.PagingResultDto;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class NovelDtoMapper {
     }
 
     public static Novel toNovelEntity(CreateNovelDto novelDto) {
-        return Novel.of(novelDto.getTitle(), novelDto.getDescription(), novelDto.getCategory());
+        NovelCategory category = NovelCategory.of(novelDto.getCategory());
+        return Novel.of(novelDto.getTitle(), novelDto.getDescription(), category);
     }
 }
