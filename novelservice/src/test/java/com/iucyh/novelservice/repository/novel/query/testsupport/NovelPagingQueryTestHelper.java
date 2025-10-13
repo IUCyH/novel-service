@@ -1,4 +1,4 @@
-package com.iucyh.novelservice.repository.novel.query.pagingquery.helper;
+package com.iucyh.novelservice.repository.novel.query.testsupport;
 
 import com.iucyh.novelservice.domain.novel.Novel;
 import com.iucyh.novelservice.repository.novel.NovelRepository;
