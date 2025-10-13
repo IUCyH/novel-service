@@ -1,5 +1,6 @@
 package com.iucyh.novelservice.repository.novel.query.pagingquery.strategy;
 
+import com.iucyh.novelservice.common.annotation.RepositoryTest;
 import com.iucyh.novelservice.domain.novel.Novel;
 import com.iucyh.novelservice.domain.novel.NovelCategory;
 import com.iucyh.novelservice.domain.novel.NovelPeriodView;
@@ -18,7 +19,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -26,7 +26,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-@DataJpaTest
+@RepositoryTest
 public class NovelPopularPagingQueryTest {
 
     private static final int DUMMY_DATA_SIZE = 10;

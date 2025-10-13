@@ -1,5 +1,6 @@
 package com.iucyh.novelservice.repository.novel.query.pagingquery.strategy;
 
+import com.iucyh.novelservice.common.annotation.RepositoryTest;
 import com.iucyh.novelservice.domain.novel.Novel;
 import com.iucyh.novelservice.domain.novel.NovelCategory;
 import com.iucyh.novelservice.dto.novel.query.NovelPagingQueryDto;
@@ -8,7 +9,7 @@ import com.iucyh.novelservice.repository.novel.NovelRepository;
 import com.iucyh.novelservice.repository.novel.query.cursor.NovelCursor;
 import com.iucyh.novelservice.repository.novel.query.cursor.NovelLastUpdateCursor;
 import com.iucyh.novelservice.repository.novel.query.pagingquery.NovelLastUpdatePagingQuery;
-import com.iucyh.novelservice.repository.novel.query.pagingquery.helper.NovelPagingQueryTestHelper;
+import com.iucyh.novelservice.repository.novel.query.testsupport.NovelPagingQueryTestHelper;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -16,7 +17,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -24,7 +24,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-@DataJpaTest
+@RepositoryTest
 public class NovelLastUpdatePagingQueryTest {
 
     private static final int DUMMY_DATA_SIZE = 10;
