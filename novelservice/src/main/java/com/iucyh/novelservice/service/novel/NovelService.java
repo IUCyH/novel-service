@@ -45,6 +45,16 @@ public class NovelService {
         novel.updateCategory(newCategory);
     }
 
+    public void addLikeCount(long userId, UUID publicId) {
+        Novel novel = findNovelWithUserId(userId, publicId);
+        novel.addLikes(1);
+    }
+
+    public void removeLikeCount(long userId, UUID publicId) {
+        Novel novel = findNovelWithUserId(userId, publicId);
+        novel.removeLikes(1);
+    }
+
     public void deleteNovel(long userId, UUID publicId) {
         Novel novel = findNovelWithUserId(userId, publicId);
         novel.softDelete();
