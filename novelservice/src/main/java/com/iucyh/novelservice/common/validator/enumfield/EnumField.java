@@ -1,5 +1,6 @@
 package com.iucyh.novelservice.common.validator.enumfield;
 
+import com.iucyh.novelservice.common.enumtype.ValuedEnum;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -15,7 +16,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = EnumFieldValidator.class)
 public @interface EnumField {
 
-    Class<? extends Enum<?>> enumClass();
+    Class<? extends ValuedEnum> enumClass();
 
     String message() default "Invalid enum value";
 
