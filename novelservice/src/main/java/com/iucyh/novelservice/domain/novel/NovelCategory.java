@@ -1,8 +1,9 @@
 package com.iucyh.novelservice.domain.novel;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.iucyh.novelservice.common.enumtype.ValuedEnum;
 
-public enum NovelCategory {
+public enum NovelCategory implements ValuedEnum {
 
     FANTASY("fantasy"),
     ROMANCE("romance"),
@@ -18,6 +19,7 @@ public enum NovelCategory {
         this.value = value;
     }
 
+    @Override
     @JsonValue
     public String getValue() {
         return value;
@@ -27,10 +29,7 @@ public enum NovelCategory {
         if (value == null || value.isBlank()) return null;
 
         for (NovelCategory category : values()) {
-            boolean isValueMatch = category.getValue().equalsIgnoreCase(value);
-            boolean isNameMatch = category.name().equalsIgnoreCase(value);
-
-            if (isValueMatch || isNameMatch) {
+            if (category.getValue().equals(value)) {
                 return category;
             }
         }

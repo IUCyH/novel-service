@@ -1,9 +1,10 @@
 package com.iucyh.novelservice.dto.novel;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.iucyh.novelservice.common.enumtype.ValuedEnum;
 import com.iucyh.novelservice.repository.novel.query.cursor.*;
 
-public enum NovelSortType {
+public enum NovelSortType implements ValuedEnum {
 
     POPULAR("popular") {
         @Override
@@ -37,20 +38,18 @@ public enum NovelSortType {
     NovelSortType(String value) {
         this.value = value;
     }
-    
+
+    @Override
     @JsonValue
     public String getValue() {
         return value;
     }
-    
+
     public static NovelSortType of(String value) {
         if (value == null || value.isBlank()) return null;
 
         for (NovelSortType sortType : values()) {
-            boolean isValueMatch = sortType.getValue().equalsIgnoreCase(value);
-            boolean isNameMatch = sortType.name().equalsIgnoreCase(value);
-
-            if (isValueMatch || isNameMatch) {
+            if (sortType.getValue().equals(value)) {
                 return sortType;
             }
         }
