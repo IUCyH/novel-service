@@ -12,7 +12,7 @@ public class NovelDtoMapper {
 
     public static NovelDto toNovelDto(Novel novel) {
         return new NovelDto(
-                novel.getPublicId().toString(),
+                novel.getPublicIdToString(),
                 novel.getTitle(),
                 novel.getDescription(),
                 novel.getLikeCount(),

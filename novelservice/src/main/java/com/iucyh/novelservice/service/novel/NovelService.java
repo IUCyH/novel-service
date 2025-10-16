@@ -33,7 +33,7 @@ public class NovelService {
         Novel newNovel = NovelDtoMapper.toNovelEntity(createNovelDto);
         novelRepository.save(newNovel);
 
-        String newPublicId = newNovel.getPublicId().toString();
+        String newPublicId = newNovel.getPublicIdToString();
         return new IdDto(newPublicId);
     }
 

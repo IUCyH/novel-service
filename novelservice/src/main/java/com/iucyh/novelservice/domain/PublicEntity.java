@@ -16,4 +16,11 @@ public abstract class PublicEntity extends DateEntity {
             unique = true, nullable = false, updatable = false
     )
     private UUID publicId = Generators.timeBasedEpochGenerator().generate();
+
+    /**
+     * publicId 를 문자열로 변환 후 하이픈('-') 을 제거한 결과를 반환
+     */
+    public String getPublicIdToString() {
+        return publicId.toString().replace("-", "");
+    }
 }
