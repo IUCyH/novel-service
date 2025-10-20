@@ -1,6 +1,6 @@
 package com.iucyh.novelservice.repository.novel.query;
 
-import com.iucyh.novelservice.common.annotation.RepositoryTest;
+import com.iucyh.novelservice.testsupport.annotation.RepositoryTest;
 import com.iucyh.novelservice.domain.novel.Novel;
 import com.iucyh.novelservice.domain.novel.NovelCategory;
 import com.iucyh.novelservice.dto.novel.query.NovelPagingQueryDto;
@@ -50,7 +50,7 @@ public class NovelQueryRepositoryTest {
     }
 
     @Test
-    @DisplayName("소설 리스트 조회")
+    @DisplayName("소설 리스트 조회 성공")
     void repositoryReturnsList() {
         // given
         NovelSearchCondition condition = new NovelSearchCondition(null);
@@ -67,7 +67,7 @@ public class NovelQueryRepositoryTest {
     }
 
     @Test
-    @DisplayName("카테고리별 소설 리스트 조회")
+    @DisplayName("카테고리별 소설 리스트 조회 성공")
     void repositoryReturnsListByCategory() {
         // given
         NovelSearchCondition condition = new NovelSearchCondition(null);
@@ -82,7 +82,7 @@ public class NovelQueryRepositoryTest {
     }
 
     @Test
-    @DisplayName("이번달에 생성된 신작 소설 리스트 조회")
+    @DisplayName("이번달에 생성된 신작 소설 리스트 조회 성공")
     void repositoryReturnsListCreatedThisMonth() {
         // given
         NovelSearchCondition condition = new NovelSearchCondition(null);
@@ -111,7 +111,7 @@ public class NovelQueryRepositoryTest {
         for (int i = 0; i < 10; i++) {
             int sequence = i + 1;
 
-            Novel novel = createTestNovel(sequence);
+            Novel novel = Novel.of("novel-" + sequence, "", NovelCategory.LIFE);
             novel.updateLastEpisodeAt(LocalDateTime.now());
             if (sequence % 2 == 0) {
                 novel.updateCategory(NovelCategory.SF);
@@ -137,10 +137,6 @@ public class NovelQueryRepositoryTest {
         em.clear();
 
         return testNovels.size();
-    }
-
-    private Novel createTestNovel(int sequence) {
-        return Novel.of("novel-" + sequence, "", NovelCategory.LIFE);
     }
 
     private void setCreatedAt(Novel novel, LocalDateTime dateTime) {
