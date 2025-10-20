@@ -1,6 +1,6 @@
 package com.iucyh.novelservice.repository.novel.query.pagingquery.strategy;
 
-import com.iucyh.novelservice.common.annotation.RepositoryTest;
+import com.iucyh.novelservice.testsupport.annotation.RepositoryTest;
 import com.iucyh.novelservice.domain.novel.Novel;
 import com.iucyh.novelservice.domain.novel.NovelCategory;
 import com.iucyh.novelservice.dto.novel.query.NovelPagingQueryDto;
