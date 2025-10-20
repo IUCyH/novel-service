@@ -1,4 +1,4 @@
-package com.iucyh.novelservice.repository.base;
+package com.iucyh.novelservice.repository.base.testsupport;
 
 import com.iucyh.novelservice.repository.PublicEntityRepository;
 

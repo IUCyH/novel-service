@@ -1,9 +1,6 @@
-package com.iucyh.novelservice.repository.base;
+package com.iucyh.novelservice.repository.base.testsupport;
 
-import com.fasterxml.uuid.Generators;
-import com.fasterxml.uuid.UUIDGenerator;
 import com.iucyh.novelservice.domain.PublicEntity;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
