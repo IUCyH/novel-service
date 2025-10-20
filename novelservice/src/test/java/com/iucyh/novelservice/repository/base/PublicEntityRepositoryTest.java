@@ -1,7 +1,9 @@
 package com.iucyh.novelservice.repository.base;
 
 import com.fasterxml.uuid.Generators;
-import com.iucyh.novelservice.common.annotation.RepositoryTest;
+import com.iucyh.novelservice.repository.base.testsupport.TestEntity;
+import com.iucyh.novelservice.repository.base.testsupport.TestRepository;
+import com.iucyh.novelservice.testsupport.annotation.RepositoryTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
