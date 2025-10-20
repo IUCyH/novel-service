@@ -28,7 +28,7 @@ public class NovelController {
     public SuccessDto<PagingResultDto<NovelDto>> getNovels(
             @Valid @ModelAttribute NovelPagingRequestDto requestDto
     ) {
-        PagingResultDto<NovelDto> results = novelQueryService.findNewNovels(requestDto);
+        PagingResultDto<NovelDto> results = novelQueryService.findNovels(requestDto);
         return new SuccessDto<>(results);
     }
 
