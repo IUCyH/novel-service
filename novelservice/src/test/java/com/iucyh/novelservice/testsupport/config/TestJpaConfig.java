@@ -1,4 +1,4 @@
-package com.iucyh.novelservice.common.config;
+package com.iucyh.novelservice.testsupport.config;
 
 import com.iucyh.novelservice.repository.novel.query.NovelQueryRepository;
 import com.iucyh.novelservice.repository.novel.query.NovelQueryRepositoryImpl;

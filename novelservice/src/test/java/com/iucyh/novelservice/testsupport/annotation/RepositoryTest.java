@@ -1,6 +1,6 @@
-package com.iucyh.novelservice.common.annotation;
+package com.iucyh.novelservice.testsupport.annotation;
 
-import com.iucyh.novelservice.common.config.TestJpaConfig;
+import com.iucyh.novelservice.testsupport.config.TestJpaConfig;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
