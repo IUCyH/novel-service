@@ -5,11 +5,13 @@ import com.iucyh.novelservice.domain.novel.NovelCategory;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import static com.iucyh.novelservice.common.constant.NovelConstants.*;
 
 @Getter
+@NoArgsConstructor
 public class CreateNovelDto {
 
     @NotEmpty
@@ -23,4 +25,10 @@ public class CreateNovelDto {
     @NotNull
     @EnumField(enumClass = NovelCategory.class)
     private String category;
+
+    public CreateNovelDto(String title, String description, String category) {
+        this.title = title;
+        this.description = description;
+        this.category = category;
+    }
 }
