@@ -1,6 +1,6 @@
 package com.iucyh.novelservice.common.testsupport;
 
-import com.iucyh.novelservice.common.enumtype.ValuedEnum;
+import com.iucyh.novelservice.common.enumtype.valuedenum.ValuedEnum;
 
 public enum TestValuedEnum implements ValuedEnum {
 
