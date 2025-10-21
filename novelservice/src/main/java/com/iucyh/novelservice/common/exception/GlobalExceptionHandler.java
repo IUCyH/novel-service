@@ -3,6 +3,7 @@ package com.iucyh.novelservice.common.exception;
 import com.iucyh.novelservice.dto.FailDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
@@ -45,6 +47,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         FailDto failDto = FailDto.from(e, req.getRequestURI());
         return ResponseEntity
                 .status(e.getErrorCode().getStatus())
+                .body(failDto);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<FailDto> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, HttpServletRequest req) {
+        log.warn("{} : {}", LocalDateTime.now(), e.getMessage());
+
+        String path = req.getRequestURI();
+        String parameterName = e.getName();
+        String parameterType = e.getRequiredType() == null ? "Not provided" : e.getRequiredType().getSimpleName();
+
+        FailDto failDto = new FailDto(CommonErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH, "Parameter type mismatch", path, Map.of("parameterName", parameterName, "requiredParameterType", parameterType));
+        return ResponseEntity
+                .status(CommonErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH.getStatus())
                 .body(failDto);
     }
 

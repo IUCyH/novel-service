@@ -11,7 +11,8 @@ public enum CommonErrorCode implements ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON-5001"),
     VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "COMMON-4001"),
     MISSING_PATH_VARIABLE(HttpStatus.BAD_REQUEST, "COMMON-4002"),
-    HTTP_MESSAGE_NOT_READABLE(HttpStatus.BAD_REQUEST, "COMMON-4003");
+    HTTP_MESSAGE_NOT_READABLE(HttpStatus.BAD_REQUEST, "COMMON-4003"),
+    METHOD_ARGUMENT_TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "COMMON-4004");
 
     private final HttpStatus status;
     private final String code;
