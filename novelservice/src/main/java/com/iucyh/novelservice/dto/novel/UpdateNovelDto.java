@@ -1,6 +1,7 @@
 package com.iucyh.novelservice.dto.novel;
 
 import com.iucyh.novelservice.common.validator.enumfield.EnumField;
+import com.iucyh.novelservice.common.validator.notblank.NotBlankIfPresent;
 import com.iucyh.novelservice.domain.novel.NovelCategory;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import static com.iucyh.novelservice.common.constant.NovelConstants.*;
 @NoArgsConstructor
 public class UpdateNovelDto {
 
+    @NotBlankIfPresent
     @Size(min = NOVEL_TITLE_LENGTH_MIN, max = NOVEL_TITLE_LENGTH_MAX)
     private String title;
 
