@@ -8,9 +8,9 @@ import java.util.Map;
 public abstract class ServiceException extends RuntimeException {
 
     private final ErrorCode errorCode;
-    private final Object causes;
+    private final Map<String, Object> causes;
 
-    protected ServiceException(ErrorCode errorCode, String message, Object causes) {
+    protected ServiceException(ErrorCode errorCode, String message, Map<String, Object> causes) {
         super(message);
         this.errorCode = errorCode;
         this.causes = causes;
@@ -20,7 +20,7 @@ public abstract class ServiceException extends RuntimeException {
         this(errorCode, errorCode.getDefaultMessage(), Map.of());
     }
 
-    protected ServiceException(ErrorCode errorCode, Object causes) {
+    protected ServiceException(ErrorCode errorCode, Map<String, Object> causes) {
         this(errorCode, errorCode.getDefaultMessage(), causes);
     }
 
