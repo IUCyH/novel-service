@@ -8,6 +8,6 @@ import java.util.Map;
 public class InvalidNovelCursor extends ServiceException {
 
     public InvalidNovelCursor() {
-        super(NovelErrorCode.INVALID_CURSOR, "Invalid cursor", null);
+        super(NovelErrorCode.INVALID_CURSOR);
     }
 }
