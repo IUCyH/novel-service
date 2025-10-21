@@ -5,6 +5,7 @@ import com.iucyh.novelservice.common.exception.ServiceException;
 import lombok.Getter;
 
 import java.time.Instant;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class FailDto {
         this.causes = causes == null ? Map.of() : causes;
     }
 
-    public FailDto(ErrorCode errorCode, String message, String path, List<Object> causes) {
+    public FailDto(ErrorCode errorCode, String message, String path, List<LinkedHashMap<String, String>> causes) {
         this.timestamp = getCurrentTimeStamp();
         this.status = errorCode.getStatus().value();
         this.code = errorCode.getCode();
