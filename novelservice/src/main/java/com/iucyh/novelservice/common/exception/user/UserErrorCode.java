@@ -9,8 +9,9 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum UserErrorCode implements ErrorCode {
 
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER-404");
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER-404", "User Not Found With This Public Id");
 
     private final HttpStatus status;
     private final String code;
+    private final String defaultMessage;
 }
