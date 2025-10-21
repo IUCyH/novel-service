@@ -1,7 +1,8 @@
 package com.iucyh.novelservice.dto.novel;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.iucyh.novelservice.common.enumtype.ValuedEnum;
+import com.iucyh.novelservice.common.enumtype.valuedenum.ValuedEnum;
+import com.iucyh.novelservice.common.enumtype.valuedenum.ValuedEnumHelper;
 import com.iucyh.novelservice.repository.novel.query.cursor.*;
 
 public enum NovelSortType implements ValuedEnum {
@@ -46,13 +47,6 @@ public enum NovelSortType implements ValuedEnum {
     }
 
     public static NovelSortType of(String value) {
-        if (value == null || value.isBlank()) return null;
-
-        for (NovelSortType sortType : values()) {
-            if (sortType.getValue().equals(value)) {
-                return sortType;
-            }
-        }
-        return null;
+        return ValuedEnumHelper.fromValue(value, NovelSortType.class);
     }
 }

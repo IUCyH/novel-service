@@ -1,7 +1,8 @@
 package com.iucyh.novelservice.domain.novel;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.iucyh.novelservice.common.enumtype.ValuedEnum;
+import com.iucyh.novelservice.common.enumtype.valuedenum.ValuedEnum;
+import com.iucyh.novelservice.common.enumtype.valuedenum.ValuedEnumHelper;
 
 public enum NovelCategory implements ValuedEnum {
 
@@ -26,13 +27,6 @@ public enum NovelCategory implements ValuedEnum {
     }
 
     public static NovelCategory of(String value) {
-        if (value == null || value.isBlank()) return null;
-
-        for (NovelCategory category : values()) {
-            if (category.getValue().equals(value)) {
-                return category;
-            }
-        }
-        return null;
+        return ValuedEnumHelper.fromValue(value, NovelCategory.class);
     }
 }
