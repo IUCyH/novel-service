@@ -27,19 +27,6 @@ import java.util.Map;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<FailDto> handleException(Exception ex, HttpServletRequest req) {
-        log.error("{} : {}, stack trace : {}", LocalDateTime.now(), ex.getMessage(), ex.getStackTrace());
-
-        ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
-        String path = req.getRequestURI();
-
-        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path);
-        return ResponseEntity
-                .status(errorCode.getStatus())
-                .body(failDto);
-    }
-
-    @ExceptionHandler
     public ResponseEntity<FailDto> handleServiceException(ServiceException ex, HttpServletRequest req) {
         log.warn("{} : {}", LocalDateTime.now(), ex.getMessage());
 
@@ -108,6 +95,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         List<LinkedHashMap<String, String>> failedFields = getFailedFields(ex);
 
         FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path, Map.of("fields", failedFields));
+        return ResponseEntity
+                .status(errorCode.getStatus())
+                .body(failDto);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<FailDto> handleException(Exception ex, HttpServletRequest req) {
+        log.error("{} : {}, stack trace : {}", LocalDateTime.now(), ex.getMessage(), ex.getStackTrace());
+
+        ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
+        String path = req.getRequestURI();
+
+        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path);
         return ResponseEntity
                 .status(errorCode.getStatus())
                 .body(failDto);
