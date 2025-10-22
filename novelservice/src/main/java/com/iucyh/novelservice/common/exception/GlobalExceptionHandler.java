@@ -107,7 +107,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String path = getRequestPath(request);
         List<LinkedHashMap<String, String>> failedFields = getFailedFields(ex);
 
-        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path, failedFields);
+        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path, Map.of("fields", failedFields));
         return ResponseEntity
                 .status(errorCode.getStatus())
                 .body(failDto);
