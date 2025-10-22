@@ -56,7 +56,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         String path = req.getRequestURI();
         String parameterName = ex.getName();
-        String parameterType = ex.getRequiredType() == null ? "Not provided" : ex.getRequiredType().getSimpleName();
+        String parameterType = ex.getRequiredType() == null ? "" : ex.getRequiredType().getSimpleName();
 
         LinkedHashMap<String, Object> causes = new LinkedHashMap<>();
         causes.put("parameterName", parameterName);
