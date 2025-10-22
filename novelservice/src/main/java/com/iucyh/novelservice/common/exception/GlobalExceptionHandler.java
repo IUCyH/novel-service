@@ -62,7 +62,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String parameterType = ex.getRequiredType() == null ? "" : ex.getRequiredType().getSimpleName();
 
         causes.put("parameterName", parameterName);
-        causes.put("requiredParameterType", parameterType);
+        causes.put("requiredType", parameterType);
 
         FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path, causes);
         return ResponseEntity
