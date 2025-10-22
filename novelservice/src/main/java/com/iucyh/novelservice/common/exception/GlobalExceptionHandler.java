@@ -30,12 +30,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<FailDto> handleException(Exception ex, HttpServletRequest req) {
         log.error("{} : {}, stack trace : {}", LocalDateTime.now(), ex.getMessage(), ex.getStackTrace());
 
+        ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
         String path = req.getRequestURI();
-        String message = CommonErrorCode.INTERNAL_SERVER_ERROR.getDefaultMessage();
 
-        FailDto failDto = new FailDto(CommonErrorCode.INTERNAL_SERVER_ERROR, message, path);
+        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path);
         return ResponseEntity
-                .status(CommonErrorCode.INTERNAL_SERVER_ERROR.getStatus())
+                .status(errorCode.getStatus())
                 .body(failDto);
     }
 
@@ -54,18 +54,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<FailDto> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, HttpServletRequest req) {
         log.warn("{} : {}", LocalDateTime.now(), ex.getMessage());
 
+        ErrorCode errorCode = CommonErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH;
         String path = req.getRequestURI();
+
+        LinkedHashMap<String, Object> causes = new LinkedHashMap<>();
         String parameterName = ex.getName();
         String parameterType = ex.getRequiredType() == null ? "" : ex.getRequiredType().getSimpleName();
 
-        LinkedHashMap<String, Object> causes = new LinkedHashMap<>();
         causes.put("parameterName", parameterName);
         causes.put("requiredParameterType", parameterType);
 
-        String message = CommonErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH.getDefaultMessage();
-        FailDto failDto = new FailDto(CommonErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH, message, path, causes);
+        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path, causes);
         return ResponseEntity
-                .status(CommonErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH.getStatus())
+                .status(errorCode.getStatus())
                 .body(failDto);
     }
 
@@ -73,14 +74,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.warn("{} : {}", LocalDateTime.now(), ex.getMessage());
 
+        ErrorCode errorCode = CommonErrorCode.MISSING_PATH_VARIABLE;
         String path = getRequestPath(request);
+
         String variableName = ex.getVariableName();
-        String message = CommonErrorCode.MISSING_PATH_VARIABLE.getDefaultMessage();
         Map<String, Object> causes = Map.of("missingVariable", variableName);
 
-        FailDto failDto = new FailDto(CommonErrorCode.MISSING_PATH_VARIABLE, message, path, causes);
+        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path, causes);
         return ResponseEntity
-                .status(CommonErrorCode.MISSING_PATH_VARIABLE.getStatus())
+                .status(errorCode.getStatus())
                 .body(failDto);
     }
 
@@ -88,13 +90,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.warn("{} : {}", LocalDateTime.now(), ex.getMessage());
 
+        ErrorCode errorCode = CommonErrorCode.HTTP_MESSAGE_NOT_READABLE;
         String path = getRequestPath(request);
-        String message = CommonErrorCode.HTTP_MESSAGE_NOT_READABLE.getDefaultMessage();
 
-        FailDto failDto = new FailDto(CommonErrorCode.HTTP_MESSAGE_NOT_READABLE, message, path);
-
+        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path);
         return ResponseEntity
-                .status(CommonErrorCode.HTTP_MESSAGE_NOT_READABLE.getStatus())
+                .status(errorCode.getStatus())
                 .body(failDto);
     }
 
@@ -102,13 +103,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("{} : {}", LocalDateTime.now(), ex.getMessage());
 
+        ErrorCode errorCode = CommonErrorCode.VALIDATION_FAILED;
         String path = getRequestPath(request);
-        String message = CommonErrorCode.VALIDATION_FAILED.getDefaultMessage();
         List<LinkedHashMap<String, String>> failedFields = getFailedFields(ex);
 
-        FailDto failDto = new FailDto(CommonErrorCode.VALIDATION_FAILED, message, path, failedFields);
+        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path, failedFields);
         return ResponseEntity
-                .status(CommonErrorCode.VALIDATION_FAILED.getStatus())
+                .status(errorCode.getStatus())
                 .body(failDto);
     }
 
