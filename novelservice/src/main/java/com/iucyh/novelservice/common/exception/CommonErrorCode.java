@@ -8,11 +8,11 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum CommonErrorCode implements ErrorCode {
 
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON-5001", "Internal Server Error"),
-    VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "COMMON-4001", "Validation Failed"),
-    MISSING_PATH_VARIABLE(HttpStatus.BAD_REQUEST, "COMMON-4002", "Missing Path Variable"),
-    HTTP_MESSAGE_NOT_READABLE(HttpStatus.BAD_REQUEST, "COMMON-4003", "Cannot Read Request Body"),
-    METHOD_ARGUMENT_TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "COMMON-4004", "Argument Type Mismatch");
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON-5001", "Internal server error"),
+    VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "COMMON-4001", "Validation failed"),
+    MISSING_PATH_VARIABLE(HttpStatus.BAD_REQUEST, "COMMON-4002", "Missing path variable"),
+    HTTP_MESSAGE_NOT_READABLE(HttpStatus.BAD_REQUEST, "COMMON-4003", "Cannot read request body"),
+    METHOD_ARGUMENT_TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "COMMON-4004", "Method argument type mismatch");
 
     private final HttpStatus status;
     private final String code;
