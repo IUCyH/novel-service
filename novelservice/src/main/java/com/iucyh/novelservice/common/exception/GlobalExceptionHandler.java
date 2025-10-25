@@ -10,12 +10,14 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -34,6 +36,39 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         FailDto failDto = FailDto.from(ex, path);
         return ResponseEntity
                 .status(ex.getErrorCode().getStatus())
+                .body(failDto);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleNoResourceFoundException(NoResourceFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        log.warn("{} : {}", LocalDateTime.now(), ex.getMessage());
+
+        ErrorCode errorCode = CommonErrorCode.NO_RESOURCE_FOUND;
+        String path = getRequestPath(request);
+
+        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path);
+        return ResponseEntity
+                .status(errorCode.getStatus())
+                .body(failDto);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        log.warn("{} : {}", LocalDateTime.now(), ex.getMessage());
+
+        ErrorCode errorCode = CommonErrorCode.MISSING_SERVLET_REQUEST_PARAMETER;
+        String path = getRequestPath(request);
+
+        String parameterName = ex.getParameterName();
+        String parameterType = ex.getParameterType();
+
+        LinkedHashMap<String, Object> causes = new LinkedHashMap<>();
+        causes.put("parameterName", parameterName);
+        causes.put("requiredType", parameterType);
+
+        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path, causes);
+        return ResponseEntity
+                .status(errorCode.getStatus())
                 .body(failDto);
     }
 
