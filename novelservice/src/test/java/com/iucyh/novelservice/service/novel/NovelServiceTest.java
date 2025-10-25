@@ -1,6 +1,7 @@
 package com.iucyh.novelservice.service.novel;
 
 import com.iucyh.novelservice.common.exception.novel.DuplicateNovelTitle;
+import com.iucyh.novelservice.common.exception.novel.NovelErrorCode;
 import com.iucyh.novelservice.common.exception.novel.NovelNotFound;
 import com.iucyh.novelservice.domain.novel.Novel;
 import com.iucyh.novelservice.domain.novel.NovelCategory;
@@ -38,9 +39,16 @@ public class NovelServiceTest {
         when(novelRepository.existsByTitle(Mockito.anyString()))
                 .thenReturn(true);
 
+        // when
+        Throwable throwable = catchThrowable(() -> novelService.createNovel(dto));
+
         // then
-        assertThatThrownBy(() -> novelService.createNovel(dto))
+        assertThat(throwable)
                 .isInstanceOf(DuplicateNovelTitle.class);
+
+        DuplicateNovelTitle duplicateTitle = (DuplicateNovelTitle) throwable;
+        assertThat(duplicateTitle.getErrorCode())
+                .isEqualTo(NovelErrorCode.DUPLICATE_TITLE);
     }
 
     @Test
@@ -98,8 +106,15 @@ public class NovelServiceTest {
         when(novelRepository.findByPublicId(uuid))
                 .thenReturn(Optional.empty());
 
+        // when
+        Throwable throwable = catchThrowable(() -> novelService.deleteNovel(1, uuid));
+
         // then
-        assertThatThrownBy(() -> novelService.deleteNovel(1, uuid))
+        assertThat(throwable)
                 .isInstanceOf(NovelNotFound.class);
+
+        NovelNotFound novelNotFound = (NovelNotFound) throwable;
+        assertThat(novelNotFound.getErrorCode())
+                .isEqualTo(NovelErrorCode.NOVEL_NOT_FOUND);
     }
 }
