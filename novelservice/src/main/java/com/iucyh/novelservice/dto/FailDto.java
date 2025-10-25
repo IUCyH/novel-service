@@ -10,7 +10,7 @@ import java.util.Map;
 @Getter
 public class FailDto {
 
-    private final boolean isSuccess = false;
+    private final Boolean isSuccess = false;
     private final Instant timestamp;
     private final int status;
     private final String code;
