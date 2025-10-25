@@ -10,7 +10,7 @@ import java.util.Map;
 @Getter
 public class FailDto {
 
-    private final boolean isSuccess = false;
+    private final Boolean isSuccess = false;
     private final Instant timestamp;
     private final int status;
     private final String code;
@@ -19,15 +19,23 @@ public class FailDto {
     private final Map<String, Object> causes;
 
     public FailDto(ErrorCode errorCode, String message, String path, Map<String, Object> causes) {
-        this.timestamp = Instant.now();
+        this.timestamp = getCurrentTimeStamp();
         this.status = errorCode.getStatus().value();
         this.code = errorCode.getCode();
         this.message = message;
         this.path = path;
-        this.causes = causes;
+        this.causes = causes == null ? Map.of() : causes;
+    }
+
+    public FailDto(ErrorCode errorCode, String message, String path) {
+        this(errorCode, message, path, null);
     }
 
     public static FailDto from(ServiceException e, String path) {
         return new FailDto(e.getErrorCode(), e.getMessage(), path, e.getCauses());
+    }
+
+    private Instant getCurrentTimeStamp() {
+        return Instant.now();
     }
 }
