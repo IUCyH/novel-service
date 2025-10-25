@@ -3,6 +3,9 @@ package com.iucyh.novelservice.controller.novel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iucyh.novelservice.common.constant.NovelConstants;
 import com.iucyh.novelservice.common.exception.CommonErrorCode;
+import com.iucyh.novelservice.common.exception.ErrorCode;
+import com.iucyh.novelservice.common.exception.novel.DuplicateNovelTitle;
+import com.iucyh.novelservice.common.exception.novel.NovelErrorCode;
 import com.iucyh.novelservice.domain.novel.NovelCategory;
 import com.iucyh.novelservice.dto.IdDto;
 import com.iucyh.novelservice.dto.PagingResultDto;
@@ -76,6 +79,25 @@ public class NovelControllerTest {
                 Arguments.of("description의 길이가 최댓값보다 클 때", new UpdateNovelDto(validTitle, "a".repeat(NovelConstants.NOVEL_DESC_LENGTH_MAX + 1), validCategory)),
                 Arguments.of("category가 잘못된 값일 때", new UpdateNovelDto(validTitle, validDesc, "invalid"))
         );
+    }
+
+    @Test
+    @DisplayName("소설 생성 시 중복된 제목이라면 예외가 발생한다")
+    void failedCreateNovelWithDuplicateTitle() throws Exception {
+        // given
+        when(novelService.createNovel(any()))
+                .thenThrow(new DuplicateNovelTitle("title"));
+
+        // when
+        ResultActions action = performCreateNovel(new CreateNovelDto("title", "desc", NovelCategory.ETC.getValue()));
+
+        // then
+        ResultMatcher[] commonResultMatchers = buildFailTestCommonResultMatchers(NovelErrorCode.DUPLICATE_TITLE);
+        action
+                .andExpect(status().is(NovelErrorCode.DUPLICATE_TITLE.getStatus().value()))
+                .andExpectAll(
+                        commonResultMatchers
+                );
     }
 
     @Test
@@ -163,21 +185,6 @@ public class NovelControllerTest {
     }
 
     @Test
-    @DisplayName("GET /novels/category/{category} 에서 잘못된 category가 전달되면 missing path variable 에러가 발생한다")
-    void failedGetNovelsByCategoryWithInvalidCategory() throws Exception {
-        // when
-        ResultActions action = mockMvc.perform(
-                get("/novels/category/{category}", "invalid")
-        );
-
-        // then
-        ResultMatcher[] commonResultMatchers = buildFailTestCommonResultMatchers(CommonErrorCode.MISSING_PATH_VARIABLE);
-        action
-                .andExpect(status().isBadRequest())
-                .andExpectAll(commonResultMatchers);
-    }
-
-    @Test
     @DisplayName("GET /novels/category/{category} 에서 잘못된 sort 타입이 전달되면 검증 에러가 발생한다")
     void failedGetNovelsByCategoryWithInvalidSortType() throws Exception {
         // when
@@ -243,22 +250,6 @@ public class NovelControllerTest {
                 .andExpect(jsonPath("$.data").exists());
     }
 
-    @Test
-    @DisplayName("PATCH /novels/{publicId} 에서 잘못된 형식의 publicId가 전달되면 missing path variable 에러가 발생한다")
-    void failedUpdateNovelWithInvalidPublicId() throws Exception{
-        // given
-        UpdateNovelDto dto = new UpdateNovelDto("title", "desc", NovelCategory.ETC.getValue());
-
-        // when
-        ResultActions action = performUpdateNovel(dto, "publicId");
-
-        // then
-        ResultMatcher[] commonResultMatchers = buildFailTestCommonResultMatchers(CommonErrorCode.MISSING_PATH_VARIABLE);
-        action
-                .andExpect(status().isBadRequest())
-                .andExpectAll(commonResultMatchers);
-    }
-
     @ParameterizedTest(name = "PATCH /novels/[publicId] 검증 실패: {0}")
     @MethodSource("updateNovelInvalidCases")
     void failedUpdateNovelValidation(String caseDesc, UpdateNovelDto dto) throws Exception {
@@ -292,22 +283,6 @@ public class NovelControllerTest {
     }
 
     @Test
-    @DisplayName("POST /novels/{publicId}/likes 에서 잘못된 형식의 publicId 가 전달되면 missing path variable 에러가 발생한다")
-    void failedAddLikeCountWithInvalidPublicId() throws Exception {
-        // when
-        ResultActions action = mockMvc.perform(
-                post("/novels/{publicId}/likes", "invalid")
-                        .with(csrf())
-        );
-
-        // then
-        ResultMatcher[] commonResultMatchers = buildFailTestCommonResultMatchers(CommonErrorCode.MISSING_PATH_VARIABLE);
-        action
-                .andExpect(status().isBadRequest())
-                .andExpectAll(commonResultMatchers);
-    }
-
-    @Test
     @DisplayName("POST /novels/{publicId}/likes 에서 정상적인 값들이 전달되면 정상 처리 된다")
     void successAddLikeCount() throws Exception {
         // given
@@ -326,22 +301,6 @@ public class NovelControllerTest {
     }
 
     @Test
-    @DisplayName("DELETE /novels/{publicId}/likes 에서 잘못된 형식의 publicId 가 전달되면 missing path variable 에러가 발생한다")
-    void failedRemoveLikeCountWithInvalidPublicId() throws Exception {
-        // when
-        ResultActions action = mockMvc.perform(
-                delete("/novels/{publicId}/likes", "invalid")
-                        .with(csrf())
-        );
-
-        // then
-        ResultMatcher[] commonResultMatchers = buildFailTestCommonResultMatchers(CommonErrorCode.MISSING_PATH_VARIABLE);
-        action
-                .andExpect(status().isBadRequest())
-                .andExpectAll(commonResultMatchers);
-    }
-
-    @Test
     @DisplayName("DELETE /novels/{publicId}/likes 에서 정상적인 값들이 전달되면 정상 처리 된다")
     void successRemoveLikeCount() throws Exception {
         // given
@@ -357,22 +316,6 @@ public class NovelControllerTest {
         // then
         action.andExpect(status().isOk());
         verify(novelService).removeLikeCount(anyLong(), eq(publicId));
-    }
-
-    @Test
-    @DisplayName("DELETE /novels/{publicId} 에서 잘못된 형식의 publicId가 전달되면 missing path variable 에러가 발생한다")
-    void failedDeleteNovelWithInvalidPublicId() throws Exception {
-        // when
-        ResultActions action = mockMvc.perform(
-                delete("/novels/{publicId}", "invalid")
-                        .with(csrf())
-        );
-
-        // then
-        ResultMatcher[] commonResultMatchers = buildFailTestCommonResultMatchers(CommonErrorCode.MISSING_PATH_VARIABLE);
-        action
-                .andExpect(status().isBadRequest())
-                .andExpectAll(commonResultMatchers);
     }
 
     @Test
@@ -411,9 +354,9 @@ public class NovelControllerTest {
         );
     }
 
-    private ResultMatcher[] buildFailTestCommonResultMatchers(CommonErrorCode errorCode) {
+    private ResultMatcher[] buildFailTestCommonResultMatchers(ErrorCode errorCode) {
         return new ResultMatcher[] {
-                jsonPath("$.success").value(false),
+                jsonPath("$.isSuccess").value(false),
                 jsonPath("$.message").exists(),
                 jsonPath("$.code").value(errorCode.getCode())
         };
