@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class NovelDto {
 
-    private final String publicId;
+    private final long novelId;
     private final String title;
     private final String description;
     private final int likeCount;

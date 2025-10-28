@@ -1,7 +1,7 @@
 package com.iucyh.novelservice.repository.episode;
 
 import com.iucyh.novelservice.domain.episode.Episode;
-import com.iucyh.novelservice.repository.PublicEntityRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface EpisodeRepository extends PublicEntityRepository<Episode, Long> {
+public interface EpisodeRepository extends JpaRepository<Episode, Long> {
 }

@@ -16,6 +16,7 @@ import com.iucyh.novelservice.repository.novel.query.cursor.NovelPopularCursor;
 import com.iucyh.novelservice.repository.novel.query.pagingquery.NovelLastUpdatePagingQuery;
 import com.iucyh.novelservice.repository.novel.query.pagingquery.NovelPopularPagingQuery;
 import com.iucyh.novelservice.service.novel.codec.NovelCursorBase64Codec;
+import com.iucyh.novelservice.testsupport.testfactory.novel.NovelEntityTestFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,7 +70,7 @@ public class NovelQueryServiceTest {
     void findNovelsByCategoryInSummarySuccess() {
         // given
         NovelCategory category = NovelCategory.ETC;
-        Novel testNovel = Novel.of("test", "", category);
+        Novel testNovel = NovelEntityTestFactory.defaultNovelWithId();
 
         List<NovelPagingQueryDto> expectedResult = List.of(new NovelSimpleQueryDto(testNovel));
         doReturn(expectedResult)
@@ -88,7 +89,7 @@ public class NovelQueryServiceTest {
     void findNewNovelsInSummarySuccess() {
         // given
         LocalDateTime now = LocalDateTime.now().withDayOfMonth(1);
-        Novel testNovel = Novel.of("test", "", NovelCategory.ETC);
+        Novel testNovel = NovelEntityTestFactory.defaultNovelWithId();
         testNovel.updateLastEpisodeAt(now);
 
         List<NovelPagingQueryDto> expectedResult = List.of(new NovelSimpleQueryDto(testNovel));
@@ -128,8 +129,8 @@ public class NovelQueryServiceTest {
         NovelPagingRequestDto requestDto = new NovelPagingRequestDto();
         requestDto.setSort(NovelSortType.POPULAR.getValue());
 
-        Novel testNovel1 = Novel.of("test1", "", NovelCategory.ETC);
-        Novel testNovel2 = Novel.of("test2", "", NovelCategory.ETC);
+        Novel testNovel1 = NovelEntityTestFactory.defaultNovelWithId("test1");
+        Novel testNovel2 = NovelEntityTestFactory.defaultNovelWithId("test2");
         List<NovelPagingQueryDto> expectedResult = List.of(
                 new NovelSimpleQueryDto(testNovel1),
                 new NovelSimpleQueryDto(testNovel2)
