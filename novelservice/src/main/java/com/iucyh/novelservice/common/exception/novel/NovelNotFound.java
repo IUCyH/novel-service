@@ -6,10 +6,10 @@ import java.util.Map;
 
 public class NovelNotFound extends ServiceException {
 
-    public NovelNotFound(String publicId) {
+    public NovelNotFound(long novelId) {
         super(
                 NovelErrorCode.NOVEL_NOT_FOUND,
-                Map.of("novelId", publicId)
+                Map.of("novelId", novelId)
         );
     }
 }
