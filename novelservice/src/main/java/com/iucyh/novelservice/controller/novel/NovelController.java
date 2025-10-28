@@ -1,21 +1,14 @@
 package com.iucyh.novelservice.controller.novel;
 
 import com.iucyh.novelservice.domain.novel.NovelCategory;
-import com.iucyh.novelservice.dto.IdDto;
 import com.iucyh.novelservice.dto.PagingResultDto;
 import com.iucyh.novelservice.dto.SuccessDto;
-import com.iucyh.novelservice.dto.novel.CreateNovelDto;
-import com.iucyh.novelservice.dto.novel.NovelDto;
-import com.iucyh.novelservice.dto.novel.NovelPagingRequestDto;
-import com.iucyh.novelservice.dto.novel.UpdateNovelDto;
+import com.iucyh.novelservice.dto.novel.*;
 import com.iucyh.novelservice.service.novel.NovelQueryService;
 import com.iucyh.novelservice.service.novel.NovelService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/novels")
@@ -51,44 +44,43 @@ public class NovelController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public SuccessDto<IdDto> createNovel(
+    public SuccessDto<NovelDto> createNovel(
             @Valid @RequestBody CreateNovelDto createNovelDto
     ) {
-        IdDto idDto = novelService.createNovel(createNovelDto);
-        return new SuccessDto<>(idDto);
+        NovelDto newNovel = novelService.createNovel(createNovelDto);
+        return new SuccessDto<>(newNovel);
     }
 
-    @PatchMapping("/{publicId}")
-    public SuccessDto<Void> updateNovel(
-            @PathVariable UUID publicId,
+    @PatchMapping("/{novelId}")
+    public SuccessDto<NovelDto> updateNovel(
+            @PathVariable long novelId,
             @Valid @RequestBody UpdateNovelDto updateNovelDto
     ) {
-        novelService.updateNovel(1, publicId, updateNovelDto);
-        return SuccessDto.empty();
+        NovelDto updatedNovel = novelService.updateNovel(1, novelId, updateNovelDto);
+        return new SuccessDto<>(updatedNovel);
     }
 
-    @PostMapping("/{publicId}/likes")
-    public SuccessDto<Void> addLikeCount(
-            @PathVariable UUID publicId
+    @PostMapping("/{novelId}/likes")
+    public SuccessDto<UpdateLikeCountDto> addLikeCount(
+            @PathVariable long novelId
     ) {
-        novelService.addLikeCount(1, publicId);
-        return SuccessDto.empty();
+        UpdateLikeCountDto result = novelService.addLikeCount(1, novelId);
+        return new SuccessDto<>(result);
     }
 
-    @DeleteMapping("/{publicId}/likes")
-    public SuccessDto<Void> removeLikeCount(
-            @PathVariable UUID publicId
+    @DeleteMapping("/{novelId}/likes")
+    public SuccessDto<UpdateLikeCountDto> removeLikeCount(
+            @PathVariable long novelId
     ) {
-        novelService.removeLikeCount(1, publicId);
-        return SuccessDto.empty();
+        UpdateLikeCountDto result = novelService.removeLikeCount(1, novelId);
+        return new SuccessDto<>(result);
     }
 
-    @DeleteMapping("/{publicId}")
+    @DeleteMapping("/{novelId}")
     public SuccessDto<Void> deleteNovel(
-            @PathVariable UUID publicId
+            @PathVariable long novelId
     ) {
-        novelService.deleteNovel(1, publicId);
+        novelService.deleteNovel(1, novelId);
         return SuccessDto.empty();
     }
 }
