@@ -1,6 +1,6 @@
 package com.iucyh.novelservice.domain.novel;
 
-import com.iucyh.novelservice.domain.PublicEntity;
+import com.iucyh.novelservice.domain.DateEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import static com.iucyh.novelservice.common.constant.NovelConstants.*;
 @Table(name = "novels")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Novel extends PublicEntity {
+public class Novel extends DateEntity {
 
     @Id
     @GeneratedValue
