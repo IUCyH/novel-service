@@ -3,6 +3,8 @@ package com.iucyh.novelservice.dto.novel;
 import com.iucyh.novelservice.domain.novel.Novel;
 import com.iucyh.novelservice.domain.novel.NovelCategory;
 import com.iucyh.novelservice.dto.PagingResultDto;
+import com.iucyh.novelservice.testsupport.testfactory.novel.NovelDtoTestFactory;
+import com.iucyh.novelservice.testsupport.testfactory.novel.NovelEntityTestFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,14 +19,14 @@ public class NovelDtoMapperTest {
     @DisplayName("Novel 엔티티 -> NovelDto 변환 시 필드가 올바르게 매핑된다")
     void toNovelDtoMappedCorrectly() {
         // given
-        Novel novel = Novel.of("title", "desc", NovelCategory.ETC);
+        Novel novel = NovelEntityTestFactory.defaultNovelWithId();
         novel.updateLastEpisodeAt(LocalDateTime.now());
         
         // when
         NovelDto result = NovelDtoMapper.toNovelDto(novel);
 
         // then
-        assertThat(result.getPublicId()).isEqualTo(novel.getPublicIdToString());
+        assertThat(result.getNovelId()).isEqualTo(novel.getId());
         assertThat(result.getTitle()).isEqualTo(novel.getTitle());
         assertThat(result.getDescription()).isEqualTo(novel.getDescription());
         assertThat(result.getCategory()).isEqualTo(novel.getCategory());
@@ -38,16 +40,7 @@ public class NovelDtoMapperTest {
     @DisplayName("NovelDto 리스트 -> PagingResultDto 변환 시 필드가 올바르게 매핑된다")
     void toPagingResultDtoMappedCorrectly() {
         // given
-        NovelDto novelDto = new NovelDto(
-                "publicId",
-                "title",
-                "desc",
-                10,
-                10,
-                NovelCategory.ETC,
-                LocalDateTime.now(),
-                LocalDateTime.now()
-        );
+        NovelDto novelDto = NovelDtoTestFactory.defaultNovelDto();
 
         // when
         PagingResultDto<NovelDto> result = NovelDtoMapper.toPagingResultDto(List.of(novelDto), 10, "cursor");
@@ -62,15 +55,16 @@ public class NovelDtoMapperTest {
     @DisplayName("CreateNovelDto -> Novel 엔티티 변환 시 필드가 올바르게 매핑된다")
     void createNovelDtoToNovelMappedCorrectly() {
         // given
-        NovelCategory category = NovelCategory.ETC;
-        CreateNovelDto createNovelDto = new CreateNovelDto("title", "desc", category.getValue());
+        CreateNovelDto createNovelDto = NovelDtoTestFactory.defaultCreateNovelDto();
 
         // when
         Novel result = NovelDtoMapper.toNovelEntity(createNovelDto);
 
         // then
+        NovelCategory expectedCategory = NovelCategory.of(createNovelDto.getCategory());
+
         assertThat(result.getTitle()).isEqualTo(createNovelDto.getTitle());
         assertThat(result.getDescription()).isEqualTo(createNovelDto.getDescription());
-        assertThat(result.getCategory()).isEqualTo(category);
+        assertThat(result.getCategory()).isEqualTo(expectedCategory);
     }
 }

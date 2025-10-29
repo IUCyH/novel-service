@@ -12,7 +12,7 @@ public class NovelDtoMapper {
 
     public static NovelDto toNovelDto(Novel novel) {
         return new NovelDto(
-                novel.getPublicIdToString(),
+                novel.getId(),
                 novel.getTitle(),
                 novel.getDescription(),
                 novel.getLikeCount(),
@@ -21,6 +21,10 @@ public class NovelDtoMapper {
                 novel.getLastEpisodeAt(),
                 novel.getCreatedAt()
         );
+    }
+
+    public static UpdateLikeCountDto toNovelLikeCountDto(int likeCount) {
+        return new UpdateLikeCountDto(likeCount);
     }
 
     public static PagingResultDto<NovelDto> toPagingResultDto(List<NovelDto> novels, long totalCount, String encodedCursor) {

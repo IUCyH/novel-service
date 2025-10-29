@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class SuccessDto<T> {
 
-    private final boolean isSuccess = true;
+    private final Boolean isSuccess = true;
     private final T data;
 
     public SuccessDto(T data) {
