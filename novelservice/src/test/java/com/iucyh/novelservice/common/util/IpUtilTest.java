@@ -1,7 +1,5 @@
 package com.iucyh.novelservice.common.util;
 
-import org.apache.tomcat.util.http.parser.TE;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -47,8 +45,7 @@ public class IpUtilTest {
     void returnsIpWithMultipleXForwardedFor() {
         // given
         MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader("X-Forwarded-For", TEST_IP);
-        request.addHeader("X-Forwarded-For", "0.0.0.0");
+        request.addHeader("X-Forwarded-For", TEST_IP + ", 0.0.0.0");
 
         // when
         String ip = IpUtil.getIpAddr(request);
@@ -63,6 +60,21 @@ public class IpUtilTest {
     void returnsIpWithGetRemoteAddr() {
         // given
         MockHttpServletRequest request = new MockHttpServletRequest();
+
+        // when
+        String ip = IpUtil.getIpAddr(request);
+
+        // then
+        assertThat(ip).isNotNull();
+        assertThat(ip).isEqualTo("127.0.0.1"); // getRemoteAddr 기본값
+    }
+
+    @Test
+    @DisplayName("헤더 값이 unknown 이라면 무시되고 다른 헤더의 값이 반환된다")
+    void returnsIpWithUnknownHeader() {
+        // given
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader("X-Forwarded-For", "unknown");
 
         // when
         String ip = IpUtil.getIpAddr(request);
