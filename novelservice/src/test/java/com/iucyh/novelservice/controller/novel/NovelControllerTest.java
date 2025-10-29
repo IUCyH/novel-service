@@ -228,7 +228,7 @@ public class NovelControllerTest {
         ResultActions action = performCreateNovel(dto);
 
         // then
-        action.andExpect(status().isOk());
+        action.andExpect(status().isCreated());
         verify(novelService).createNovel(any());
     }
 

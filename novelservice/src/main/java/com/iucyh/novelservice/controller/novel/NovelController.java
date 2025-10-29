@@ -8,6 +8,7 @@ import com.iucyh.novelservice.service.novel.NovelQueryService;
 import com.iucyh.novelservice.service.novel.NovelService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -44,6 +45,7 @@ public class NovelController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public SuccessDto<NovelDto> createNovel(
             @Valid @RequestBody CreateNovelDto createNovelDto
     ) {
