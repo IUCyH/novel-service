@@ -8,6 +8,10 @@ public class NovelEntityTestFactory {
 
     private NovelEntityTestFactory() {}
 
+    public static Novel defaultNovel() {
+        return Novel.of("test", "test desc", NovelCategory.ETC);
+    }
+
     public static Novel defaultNovelWithId() {
         Novel novel = Novel.of("test", "test desc", NovelCategory.ETC);
         fillId(novel);
