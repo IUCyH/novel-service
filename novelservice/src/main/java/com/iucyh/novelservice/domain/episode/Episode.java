@@ -47,4 +47,26 @@ public class Episode extends DateEntity {
         episode.novel = novel;
         return episode;
     }
+
+    public void updateTextMetaData(String title, String description) {
+        if (title != null && !title.isBlank()) {
+            this.title = title;
+        }
+
+        if (description != null) {
+            this.description = description;
+        }
+    }
+
+    public void updateContent(String content) {
+        if (content != null && !content.isBlank()) {
+            this.content = content;
+        }
+    }
+
+    public void addViews(int count) {
+        if (count > 0) {
+            this.viewCount += count;
+        }
+    }
 }
