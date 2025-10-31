@@ -21,6 +21,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -85,8 +86,8 @@ public class EpisodeServiceTest {
     }
 
     @Test
-    @DisplayName("회차 등록에서 정상적으로 마지막으로 등록된 회차 번호 + 1 로 등록된다")
-    void createEpisodeSuccessWithValidEpisodeNumber() {
+    @DisplayName("마지막 회차가 존재할 경우 로직이 모두 정상적으로 처리되어 등록된다")
+    void createEpisodeSuccessWhenLastEpisodeExists() {
         // given
         Episode lastEpisode = EpisodeEntityTestFactory.defaultEpisodeWithId();
         Novel novel = lastEpisode.getNovel();
@@ -108,6 +109,7 @@ public class EpisodeServiceTest {
 
         assertThat(result).isNotNull();
         assertThat(result.episodeNumber()).isEqualTo(nextEpisodeNumber);
+        assertThat(novel.getLastEpisodeAt()).isEqualTo(result.createdAt());
     }
 
     private void mockSaveEpisode() {
@@ -115,6 +117,7 @@ public class EpisodeServiceTest {
             Object[] args = answer.getArguments();
             Episode episode = (Episode) args[0];
             ReflectionTestUtils.setField(episode, "id", 1L);
+            ReflectionTestUtils.setField(episode, "createdAt", LocalDateTime.now());
 
             return episode;
         }).when(episodeRepository).save(any());
