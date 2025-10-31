@@ -1,0 +1,44 @@
+package com.iucyh.novelservice.dto.episode;
+
+import com.iucyh.novelservice.domain.episode.Episode;
+import com.iucyh.novelservice.dto.episode.mapper.EpisodeResponseMapper;
+import com.iucyh.novelservice.dto.episode.response.EpisodeDetailResponse;
+import com.iucyh.novelservice.dto.episode.response.EpisodeResponse;
+import com.iucyh.novelservice.testsupport.testfactory.episode.EpisodeEntityTestFactory;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.*;
+
+public class EpisodeResponseMapperTest {
+
+    @Test
+    @DisplayName("Episode -> EpisodeResponse 변환 시 올바르게 매핑된다")
+    void toEpisodeResponseMappedCorrectly() {
+        // given
+        Episode episode = EpisodeEntityTestFactory.defaultEpisodeWithId();
+
+        // when
+        EpisodeResponse result = EpisodeResponseMapper.toEpisodeResponse(episode);
+
+        // then
+        assertThat(result.episodeId()).isEqualTo(episode.getId());
+        assertThat(result.title()).isEqualTo(episode.getTitle());
+        assertThat(result.description()).isEqualTo(episode.getDescription());
+        assertThat(result.episodeNumber()).isEqualTo(episode.getEpisodeNumber());
+        assertThat(result.viewCount()).isEqualTo(episode.getViewCount());
+    }
+
+    @Test
+    @DisplayName("Episode -> EpisodeDetailResponse 변환 시 올바르게 매핑된다")
+    void toEpisodeDetailResponseMappedCorrectly() {
+        // given
+        Episode episode = EpisodeEntityTestFactory.defaultEpisode();
+
+        // when
+        EpisodeDetailResponse result = EpisodeResponseMapper.toEpisodeDetailResponse(episode);
+
+        // then
+        assertThat(result.content()).isEqualTo(episode.getContent());
+    }
+}
