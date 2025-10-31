@@ -1,6 +1,7 @@
 package com.iucyh.novelservice.testsupport.testfactory.episode;
 
 import com.iucyh.novelservice.domain.episode.Episode;
+import com.iucyh.novelservice.domain.novel.Novel;
 import com.iucyh.novelservice.testsupport.testfactory.novel.NovelEntityTestFactory;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -15,6 +16,16 @@ public class EpisodeEntityTestFactory {
                 "test content",
                 1,
                 NovelEntityTestFactory.defaultNovel()
+        );
+    }
+
+    public static Episode defaultEpisode(Novel novel, int episodeNumber) {
+        return Episode.of(
+                "test",
+                "test desc",
+                "test content",
+                episodeNumber,
+                novel
         );
     }
 
