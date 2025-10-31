@@ -27,6 +27,8 @@ public class EpisodeResponseMapperTest {
         assertThat(result.description()).isEqualTo(episode.getDescription());
         assertThat(result.episodeNumber()).isEqualTo(episode.getEpisodeNumber());
         assertThat(result.viewCount()).isEqualTo(episode.getViewCount());
+        assertThat(result.updatedAt()).isEqualTo(episode.getUpdatedAt());
+        assertThat(result.createdAt()).isEqualTo(episode.getCreatedAt());
     }
 
     @Test

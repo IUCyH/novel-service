@@ -14,7 +14,9 @@ public class EpisodeResponseMapper {
                 episode.getTitle(),
                 episode.getDescription(),
                 episode.getEpisodeNumber(),
-                episode.getViewCount()
+                episode.getViewCount(),
+                episode.getUpdatedAt(),
+                episode.getCreatedAt()
         );
     }
 
