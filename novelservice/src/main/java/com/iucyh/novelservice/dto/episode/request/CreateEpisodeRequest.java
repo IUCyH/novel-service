@@ -20,8 +20,5 @@ public record CreateEpisodeRequest(
 
         @NotBlank
         @Size(min = EPISODE_CONTENT_LENGTH_MIN, max = EPISODE_CONTENT_LENGTH_MAX)
-        String content,
-
-        @Positive
-        int episodeNumber
+        String content
 ) {}

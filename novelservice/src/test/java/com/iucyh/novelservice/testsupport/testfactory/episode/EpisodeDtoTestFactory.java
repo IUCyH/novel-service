@@ -10,8 +10,7 @@ public class EpisodeDtoTestFactory {
         return new CreateEpisodeRequest(
                 "test",
                 "test desc",
-                "test content",
-                1
+                "test content"
         );
     }
 }

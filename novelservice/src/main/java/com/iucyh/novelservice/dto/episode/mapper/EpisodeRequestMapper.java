@@ -8,12 +8,12 @@ public class EpisodeRequestMapper {
 
     private EpisodeRequestMapper() {}
 
-    public static Episode toEpisodeEntity(CreateEpisodeRequest request, Novel novel) {
+    public static Episode toEpisodeEntity(CreateEpisodeRequest request, Novel novel, int episodeNumber) {
         return Episode.of(
                 request.title(),
                 request.description(),
                 request.content(),
-                request.episodeNumber(),
+                episodeNumber,
                 novel
         );
     }

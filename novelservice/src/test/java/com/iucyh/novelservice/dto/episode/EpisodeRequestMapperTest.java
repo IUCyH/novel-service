@@ -19,15 +19,16 @@ public class EpisodeRequestMapperTest {
         // given
         CreateEpisodeRequest request = EpisodeDtoTestFactory.defaultCreateEpisodeRequest();
         Novel novel = NovelEntityTestFactory.defaultNovel();
+        int episodeNumber = 1;
 
         // when
-        Episode result = EpisodeRequestMapper.toEpisodeEntity(request, novel);
+        Episode result = EpisodeRequestMapper.toEpisodeEntity(request, novel, episodeNumber);
 
         // then
         assertThat(result.getTitle()).isEqualTo(request.title());
         assertThat(result.getDescription()).isEqualTo(request.description());
         assertThat(result.getContent()).isEqualTo(request.content());
-        assertThat(result.getEpisodeNumber()).isEqualTo(request.episodeNumber());
+        assertThat(result.getEpisodeNumber()).isEqualTo(episodeNumber);
 
         assertThat(result.getNovel()).isEqualTo(novel);
     }
