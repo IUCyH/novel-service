@@ -1,23 +1,26 @@
 package com.iucyh.novelservice.service.episode;
 
+import com.iucyh.novelservice.common.exception.episode.EpisodeErrorCode;
+import com.iucyh.novelservice.common.exception.episode.EpisodeNotFound;
 import com.iucyh.novelservice.common.exception.novel.NovelErrorCode;
 import com.iucyh.novelservice.common.exception.novel.NovelNotFound;
 import com.iucyh.novelservice.domain.episode.Episode;
 import com.iucyh.novelservice.domain.novel.Novel;
 import com.iucyh.novelservice.dto.episode.request.CreateEpisodeRequest;
+import com.iucyh.novelservice.dto.episode.request.UpdateEpisodeDetailRequest;
+import com.iucyh.novelservice.dto.episode.request.UpdateEpisodeRequest;
+import com.iucyh.novelservice.dto.episode.response.EpisodeDetailResponse;
 import com.iucyh.novelservice.dto.episode.response.EpisodeResponse;
 import com.iucyh.novelservice.repository.episode.EpisodeRepository;
 import com.iucyh.novelservice.repository.novel.NovelRepository;
 import com.iucyh.novelservice.testsupport.testfactory.episode.EpisodeDtoTestFactory;
 import com.iucyh.novelservice.testsupport.testfactory.episode.EpisodeEntityTestFactory;
 import com.iucyh.novelservice.testsupport.testfactory.novel.NovelEntityTestFactory;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -60,6 +63,28 @@ public class EpisodeServiceTest {
         NovelNotFound novelNotFound = (NovelNotFound) throwable;
         assertThat(novelNotFound.getErrorCode())
                 .isEqualTo(NovelErrorCode.NOVEL_NOT_FOUND);
+    }
+
+    @Test
+    @DisplayName("novelId + episodeId 조건으로 회차를 조회했을 때 실패하면 도메인 예외를 던진다")
+    void failedFindEpisodeWithNovelId() {
+        // given
+        long novelId = 1L;
+        long episodeId = 1L;
+
+        when(episodeRepository.findByIdAndNovelId(episodeId, novelId))
+                .thenReturn(Optional.empty());
+
+        // when
+        Throwable throwable = catchThrowable(() -> episodeService.deleteEpisode(novelId, episodeId));
+
+        // then
+        assertThat(throwable)
+                .isInstanceOf(EpisodeNotFound.class);
+
+        EpisodeNotFound episodeNotFound = (EpisodeNotFound) throwable;
+        assertThat(episodeNotFound.getErrorCode())
+                .isEqualTo(EpisodeErrorCode.EPISODE_NOT_FOUND);
     }
 
     @Test
@@ -110,6 +135,46 @@ public class EpisodeServiceTest {
         assertThat(result).isNotNull();
         assertThat(result.episodeNumber()).isEqualTo(nextEpisodeNumber);
         assertThat(novel.getLastEpisodeAt()).isEqualTo(result.createdAt());
+    }
+
+    @Test
+    @DisplayName("회차 업데이트 시 정상적으로 업데이트 된 결과가 반환된다")
+    void updateEpisodeSuccess() {
+        // given
+        Episode episode = EpisodeEntityTestFactory.defaultEpisodeWithId();
+        Novel novel = episode.getNovel();
+        UpdateEpisodeRequest request = EpisodeDtoTestFactory.defaultUpdateEpisodeRequest();
+
+        when(episodeRepository.findByIdAndNovelId(episode.getId(), novel.getId()))
+                .thenReturn(Optional.of(episode));
+
+        // when
+        EpisodeResponse result = episodeService.updateEpisode(novel.getId(), episode.getId(), request);
+
+        // then
+        assertThat(result).isNotNull();
+
+        assertThat(result.title()).isEqualTo(request.title());
+        assertThat(result.description()).isEqualTo(request.description());
+    }
+
+    @Test
+    @DisplayName("회차 상세 정보 업데이트 시 정상적으로 업데이트 된 결과가 반환된다")
+    void updateEpisodeDetailSuccess() {
+        // given
+        Episode episode = EpisodeEntityTestFactory.defaultEpisodeWithId();
+        Novel novel = episode.getNovel();
+        UpdateEpisodeDetailRequest request = EpisodeDtoTestFactory.defaultUpdateEpisodeDetailRequest();
+
+        when(episodeRepository.findByIdAndNovelId(episode.getId(), novel.getId()))
+                .thenReturn(Optional.of(episode));
+
+        // when
+        EpisodeDetailResponse result = episodeService.updateEpisodeDetail(novel.getId(), episode.getId(), request);
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.content()).isEqualTo(request.content());
     }
 
     private void mockSaveEpisode() {

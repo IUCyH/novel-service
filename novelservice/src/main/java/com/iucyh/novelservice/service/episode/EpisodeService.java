@@ -1,11 +1,15 @@
 package com.iucyh.novelservice.service.episode;
 
+import com.iucyh.novelservice.common.exception.episode.EpisodeNotFound;
 import com.iucyh.novelservice.common.exception.novel.NovelNotFound;
 import com.iucyh.novelservice.domain.episode.Episode;
 import com.iucyh.novelservice.domain.novel.Novel;
 import com.iucyh.novelservice.dto.episode.mapper.EpisodeRequestMapper;
 import com.iucyh.novelservice.dto.episode.mapper.EpisodeResponseMapper;
 import com.iucyh.novelservice.dto.episode.request.CreateEpisodeRequest;
+import com.iucyh.novelservice.dto.episode.request.UpdateEpisodeDetailRequest;
+import com.iucyh.novelservice.dto.episode.request.UpdateEpisodeRequest;
+import com.iucyh.novelservice.dto.episode.response.EpisodeDetailResponse;
 import com.iucyh.novelservice.dto.episode.response.EpisodeResponse;
 import com.iucyh.novelservice.repository.episode.EpisodeRepository;
 import com.iucyh.novelservice.repository.novel.NovelRepository;
@@ -35,8 +39,32 @@ public class EpisodeService {
         return EpisodeResponseMapper.toEpisodeResponse(savedEpisode);
     }
 
+    public EpisodeResponse updateEpisode(long novelId, long episodeId, UpdateEpisodeRequest request) {
+        Episode episode = findEpisodeWithNovelId(novelId, episodeId);
+        episode.updateTextMetaData(request.title(), request.description());
+
+        return EpisodeResponseMapper.toEpisodeResponse(episode);
+    }
+
+    public EpisodeDetailResponse updateEpisodeDetail(long novelId, long episodeId, UpdateEpisodeDetailRequest request) {
+        Episode episode = findEpisodeWithNovelId(novelId, episodeId);
+        episode.updateContent(request.content());
+
+        return EpisodeResponseMapper.toEpisodeDetailResponse(episode);
+    }
+
+    public void deleteEpisode(long novelId, long episodeId) {
+        Episode episode = findEpisodeWithNovelId(novelId, episodeId);
+        episode.softDelete();
+    }
+
     private Novel findNovel(long novelId) {
         return novelRepository.findById(novelId)
                 .orElseThrow(() -> new NovelNotFound(novelId));
+    }
+
+    private Episode findEpisodeWithNovelId(long novelId, long episodeId) {
+        return episodeRepository.findByIdAndNovelId(episodeId, novelId)
+                .orElseThrow(() -> new EpisodeNotFound(episodeId));
     }
 }
