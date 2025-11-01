@@ -1,8 +1,6 @@
 package com.iucyh.novelservice.domain.dateentity;
 
-import com.iucyh.novelservice.domain.DateEntity;
 import com.iucyh.novelservice.domain.dateentity.testsupport.TestDateEntity;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +9,7 @@ import static org.assertj.core.api.Assertions.*;
 public class DateEntityTest {
 
     @Test
-    @DisplayName("softDelete 호출 시 deletedAt 이 현재 시간으로 갱신된다")
+    @DisplayName("softDelete 호출 시 deletedAt 필드가 현재 시간으로 설정된다")
     void successSoftDelete() {
         // given
         TestDateEntity entity = new TestDateEntity();
