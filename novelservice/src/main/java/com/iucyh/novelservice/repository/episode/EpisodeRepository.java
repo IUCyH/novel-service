@@ -11,4 +11,7 @@ public interface EpisodeRepository extends JpaRepository<Episode, Long> {
 
     @Query("select max(e.episodeNumber) from Episode e where e.novel.id = :novelId")
     Optional<Integer> findLastEpisodeNumber(@Param("novelId") long novelId);
+
+    @Query("select e from Episode e where e.id = :episodeId and e.novel.id = :novelId and e.deletedAt is null")
+    Optional<Episode> findByIdAndNovelId(@Param("episodeId") long id, @Param("novelId") long novelId);
 }

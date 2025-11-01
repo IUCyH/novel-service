@@ -102,6 +102,74 @@ public class EpisodeRepositoryTest {
         assertThat(lastEpisodeNumber).isPresent();
         assertThat(lastEpisodeNumber.get()).isEqualTo(episode3.getEpisodeNumber());
     }
+    
+    @Test
+    @DisplayName("소설 id + 회차 id 조합 회차 조회시 회차가 존재하지 않는다면 실패한다")
+    void failedFindByIdAndNovelIdWhenNoEpisodeExists() {
+        // given
+        Novel novel = NovelEntityTestFactory.defaultNovel();
+        long notExistsEpisodeId = 1L;
+
+        novelRepository.save(novel);
+        
+        // when
+        Optional<Episode> result = episodeRepository.findByIdAndNovelId(notExistsEpisodeId, novel.getId());
+
+        // then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    @DisplayName("소설 id + 회차 id 조합 회차 조회시 소설이 존재하지 않는다면 실패한다")
+    void failedFindByIdAndNovelIdWhenNoNovelExists() {
+        // given
+        Novel novel = NovelEntityTestFactory.defaultNovel();
+        Episode episode = EpisodeEntityTestFactory.defaultEpisode(novel, 1);
+        long notExistsNovelId = 999L;
+
+        saveDummyData(episode);
+
+        // when
+        Optional<Episode> result = episodeRepository.findByIdAndNovelId(episode.getId(), notExistsNovelId);
+
+        // then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    @DisplayName("소설 id + 회차 id 조합 회차 조회시 삭제된 회차라면 실패한다")
+    void failedFindByIdAndNovelIdWhenEpisodeIsDeleted() {
+        // given
+        Novel novel = NovelEntityTestFactory.defaultNovel();
+        Episode episode = EpisodeEntityTestFactory.defaultEpisode(novel, 1);
+
+        episode.softDelete();
+        saveDummyData(episode);
+
+        // when
+        Optional<Episode> result = episodeRepository.findByIdAndNovelId(episode.getId(), novel.getId());
+
+        // then
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    @DisplayName("소설 id + 회차 id 조합 회차 조회시 모든 조건이 정상이라면 성공한다")
+    void successFindByIdAndNovelId() {
+        // given
+        Novel novel = NovelEntityTestFactory.defaultNovel();
+        Episode episode = EpisodeEntityTestFactory.defaultEpisode(novel, 1);
+
+        saveDummyData(episode);
+
+        // when
+        Optional<Episode> result = episodeRepository.findByIdAndNovelId(episode.getId(), novel.getId());
+
+        // then
+        assertThat(result).isPresent();
+        assertThat(result.get().getId()).isEqualTo(episode.getId());
+        assertThat(result.get().getTitle()).isEqualTo(episode.getTitle());
+    }
 
     private void saveDummyData(Episode episode) {
         novelRepository.save(episode.getNovel());
