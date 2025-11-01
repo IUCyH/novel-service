@@ -1,8 +1,8 @@
 package com.iucyh.novelservice.repository.base;
 
 import com.fasterxml.uuid.Generators;
-import com.iucyh.novelservice.repository.base.testsupport.TestEntity;
-import com.iucyh.novelservice.repository.base.testsupport.TestRepository;
+import com.iucyh.novelservice.repository.base.testsupport.TestPublicEntity;
+import com.iucyh.novelservice.repository.base.testsupport.TestPublicRepository;
 import com.iucyh.novelservice.testsupport.annotation.RepositoryTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,17 +17,17 @@ import static org.assertj.core.api.Assertions.*;
 public class PublicEntityRepositoryTest {
 
     @Autowired
-    private TestRepository testRepository;
+    private TestPublicRepository testRepository;
 
     @Test
     @DisplayName("test의 publicId로 entity 조회 - 성공")
     void findByPublicIdWithSuccess() {
         // given
-        TestEntity testEntity = new TestEntity("test1");
+        TestPublicEntity testEntity = new TestPublicEntity("test1");
         testRepository.save(testEntity);
 
         // when
-        Optional<TestEntity> result = testRepository.findByPublicId(testEntity.getPublicId());
+        Optional<TestPublicEntity> result = testRepository.findByPublicId(testEntity.getPublicId());
 
         // then
         assertThat(result).isPresent();
@@ -38,12 +38,12 @@ public class PublicEntityRepositoryTest {
     @DisplayName("test의 publicId로 entity 조회 - 실패")
     void findByPublicIdWithFail() {
         // given
-        TestEntity testEntity = new TestEntity("test1");
+        TestPublicEntity testEntity = new TestPublicEntity("test1");
         testRepository.save(testEntity);
 
         // when
         UUID wrongPublicId = Generators.timeBasedEpochGenerator().generate();
-        Optional<TestEntity> result = testRepository.findByPublicId(wrongPublicId);
+        Optional<TestPublicEntity> result = testRepository.findByPublicId(wrongPublicId);
 
         // then
         assertThat(result).isEmpty();

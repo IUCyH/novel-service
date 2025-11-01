@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import java.util.UUID;
 
 @Entity
-public class TestEntity extends PublicEntity {
+public class TestPublicEntity extends PublicEntity {
 
     @Id
     @GeneratedValue
@@ -16,9 +16,9 @@ public class TestEntity extends PublicEntity {
 
     private String name;
 
-    public TestEntity() {}
+    public TestPublicEntity() {}
 
-    public TestEntity(String name) {
+    public TestPublicEntity(String name) {
         this.name = name;
     }
 
