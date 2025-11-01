@@ -12,9 +12,5 @@ public record UpdateEpisodeRequest(
         String title,
 
         @Size(max = EPISODE_DESC_LENGTH_MAX)
-        String description,
-
-        @NotBlankIfPresent
-        @Size(min = EPISODE_CONTENT_LENGTH_MIN, max = EPISODE_CONTENT_LENGTH_MAX)
-        String content
+        String description
 ) {}
