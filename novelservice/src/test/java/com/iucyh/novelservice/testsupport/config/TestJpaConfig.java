@@ -1,5 +1,7 @@
 package com.iucyh.novelservice.testsupport.config;
 
+import com.iucyh.novelservice.repository.episode.query.EpisodeQueryRepository;
+import com.iucyh.novelservice.repository.episode.query.EpisodeQueryRepositoryImpl;
 import com.iucyh.novelservice.repository.novel.query.NovelQueryRepository;
 import com.iucyh.novelservice.repository.novel.query.NovelQueryRepositoryImpl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -24,5 +26,10 @@ public class TestJpaConfig {
     @Bean
     public NovelQueryRepository novelQueryRepository() {
         return new NovelQueryRepositoryImpl(jpaQueryFactory());
+    }
+
+    @Bean
+    public EpisodeQueryRepository episodeQueryRepository() {
+        return new EpisodeQueryRepositoryImpl(jpaQueryFactory());
     }
 }
