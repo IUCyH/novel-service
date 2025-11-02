@@ -10,6 +10,6 @@ import java.util.List;
 public class PagingResultDto<T> {
 
     private final long totalCount;
-    private final String nextCursor;
+    private final Object nextCursor;
     private final List<T> items;
 }
