@@ -56,6 +56,18 @@ public class EpisodeEntityTestFactory {
         );
     }
 
+    public static EpisodeSimpleQueryDto defaultEpisodeSimpleQueryDto(int episodeNumber) {
+        return new EpisodeSimpleQueryDto(
+                1L,
+                "test",
+                "test desc",
+                episodeNumber,
+                0,
+                LocalDateTime.now(),
+                LocalDateTime.now()
+        );
+    }
+
     private static void fillId(Episode episode) {
         ReflectionTestUtils.setField(episode, "id", 1L);
     }

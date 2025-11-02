@@ -1,6 +1,7 @@
 package com.iucyh.novelservice.testsupport.testfactory.episode;
 
 import com.iucyh.novelservice.dto.episode.request.CreateEpisodeRequest;
+import com.iucyh.novelservice.dto.episode.request.EpisodePagingRequest;
 import com.iucyh.novelservice.dto.episode.request.UpdateEpisodeDetailRequest;
 import com.iucyh.novelservice.dto.episode.request.UpdateEpisodeRequest;
 import com.iucyh.novelservice.dto.episode.response.EpisodeResponse;
@@ -41,6 +42,13 @@ public class EpisodeDtoTestFactory {
     public static UpdateEpisodeDetailRequest defaultUpdateEpisodeDetailRequest() {
         return new UpdateEpisodeDetailRequest(
                 "new content"
+        );
+    }
+
+    public static EpisodePagingRequest defaultEpisodePagingRequest() {
+        return new EpisodePagingRequest(
+                10,
+                10
         );
     }
 }
