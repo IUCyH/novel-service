@@ -14,4 +14,7 @@ public interface EpisodeRepository extends JpaRepository<Episode, Long> {
 
     @Query("select e from Episode e where e.id = :episodeId and e.novel.id = :novelId and e.deletedAt is null")
     Optional<Episode> findByIdAndNovelId(@Param("episodeId") long id, @Param("novelId") long novelId);
+
+    @Query("select count(e) from Episode e where e.novel.id = :novelId and e.deletedAt is null")
+    int countByNovelId(@Param("novelId") long novelId);
 }

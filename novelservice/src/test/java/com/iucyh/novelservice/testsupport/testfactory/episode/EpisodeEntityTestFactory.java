@@ -2,8 +2,11 @@ package com.iucyh.novelservice.testsupport.testfactory.episode;
 
 import com.iucyh.novelservice.domain.episode.Episode;
 import com.iucyh.novelservice.domain.novel.Novel;
+import com.iucyh.novelservice.dto.episode.query.EpisodeSimpleQueryDto;
 import com.iucyh.novelservice.testsupport.testfactory.novel.NovelEntityTestFactory;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.time.LocalDateTime;
 
 public class EpisodeEntityTestFactory {
 
@@ -39,6 +42,18 @@ public class EpisodeEntityTestFactory {
         );
         fillId(episode);
         return episode;
+    }
+
+    public static EpisodeSimpleQueryDto defaultEpisodeSimpleQueryDto() {
+        return new EpisodeSimpleQueryDto(
+                1L,
+                "test",
+                "test desc",
+                1,
+                0,
+                LocalDateTime.now(),
+                LocalDateTime.now()
+        );
     }
 
     private static void fillId(Episode episode) {
