@@ -12,17 +12,22 @@ import com.iucyh.novelservice.repository.episode.EpisodeRepository;
 import com.iucyh.novelservice.repository.episode.projection.EpisodeDetail;
 import com.iucyh.novelservice.repository.episode.query.EpisodeQueryRepository;
 import com.iucyh.novelservice.repository.novel.NovelRepository;
+import com.iucyh.novelservice.service.novel.NovelViewCountService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Slf4j
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class EpisodeQueryService {
 
+    private final NovelViewCountService novelViewCountService;
     private final NovelRepository novelRepository;
     private final EpisodeRepository episodeRepository;
     private final EpisodeQueryRepository episodeQueryRepository;
@@ -48,6 +53,13 @@ public class EpisodeQueryService {
     public EpisodeDetailResponse findEpisodeDetail(long novelId, int episodeNumber) {
         EpisodeDetail detail = episodeRepository.findEpisodeDetail(novelId, episodeNumber)
                 .orElseThrow(() -> EpisodeNotFound.withEpisodeNumber(episodeNumber));
+
+        try {
+            novelViewCountService.increaseViewCounts(novelId, detail.getId());
+        } catch (DataAccessException e) {
+            log.warn("Failed to increase view count for episode {} of novel {}", detail.getId(), novelId, e);
+        }
+
         return EpisodeResponseMapper.toEpisodeDetailResponse(detail);
     }
 

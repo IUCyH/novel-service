@@ -11,6 +11,7 @@ import com.iucyh.novelservice.repository.episode.EpisodeRepository;
 import com.iucyh.novelservice.repository.episode.projection.EpisodeDetail;
 import com.iucyh.novelservice.repository.episode.query.EpisodeQueryRepository;
 import com.iucyh.novelservice.repository.novel.NovelRepository;
+import com.iucyh.novelservice.service.novel.NovelViewCountService;
 import com.iucyh.novelservice.testsupport.testfactory.episode.EpisodeDtoTestFactory;
 import com.iucyh.novelservice.testsupport.testfactory.episode.EpisodeEntityTestFactory;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +31,9 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class EpisodeQueryServiceTest {
+
+    @Mock
+    private NovelViewCountService viewCountService;
 
     @Mock
     private NovelRepository novelRepository;
@@ -113,6 +118,27 @@ public class EpisodeQueryServiceTest {
     }
 
     @Test
+    @DisplayName("특정 소설의 상세 정보 조회에서 조회수 증가가 실패하면 로그를 남기고 무시한다")
+    void findEpisodeDetailIgnoresFailureToIncreaseViewCounts() {
+        // given
+        long novelId = 1L;
+        int episodeNumber = 1;
+        EpisodeDetail episodeDetail = mockEpisodeDetail("content");
+
+        when(episodeRepository.findEpisodeDetail(novelId, episodeNumber))
+                .thenReturn(Optional.of(episodeDetail));
+
+        doThrow(new DataAccessException("test exception") {})
+                .when(viewCountService).increaseViewCounts(anyLong(), anyLong());
+
+        // when
+        EpisodeDetailResponse result = episodeQueryService.findEpisodeDetail(novelId, episodeNumber);
+
+        // then
+        assertThat(result).isNotNull();
+    }
+
+    @Test
     @DisplayName("특정 소설의 상세 정보 조회에서 쿼리 결과가 Empty 라면 도메인 예외가 발생한다")
     void failedFindEpisodeDetailWhenQueryResultEmpty() {
         // given
@@ -145,10 +171,7 @@ public class EpisodeQueryServiceTest {
         long novelId = 1L;
         int episodeNumber = 1;
         String detailContent = "content";
-
-        EpisodeDetail episodeDetail = Mockito.mock(EpisodeDetail.class);
-        when(episodeDetail.getContent())
-                .thenReturn(detailContent);
+        EpisodeDetail episodeDetail = mockEpisodeDetail(detailContent);
 
         when(episodeRepository.findEpisodeDetail(novelId, episodeNumber))
                 .thenReturn(Optional.of(episodeDetail));
@@ -161,5 +184,13 @@ public class EpisodeQueryServiceTest {
                 .isNotNull();
         assertThat(result.content())
                 .isEqualTo(detailContent);
+    }
+
+    private EpisodeDetail mockEpisodeDetail(String detailContent) {
+        EpisodeDetail episodeDetail = Mockito.mock(EpisodeDetail.class);
+        when(episodeDetail.getContent())
+                .thenReturn(detailContent);
+
+        return episodeDetail;
     }
 }
