@@ -139,7 +139,7 @@ public class EpisodeQueryServiceTest {
     }
 
     @Test
-    @DisplayName("특정 소설의 상제 정보 조회에서 결과가 올바르게 나온다")
+    @DisplayName("특정 소설의 상세 정보 조회에서 결과가 올바르게 나온다")
     void successFindEpisodeDetail() {
         // given
         long novelId = 1L;
