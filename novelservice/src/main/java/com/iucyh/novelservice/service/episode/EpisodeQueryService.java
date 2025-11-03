@@ -1,12 +1,15 @@
 package com.iucyh.novelservice.service.episode;
 
+import com.iucyh.novelservice.common.exception.episode.EpisodeNotFound;
 import com.iucyh.novelservice.common.exception.novel.NovelNotFound;
 import com.iucyh.novelservice.dto.PagingResultDto;
 import com.iucyh.novelservice.dto.episode.mapper.EpisodeResponseMapper;
 import com.iucyh.novelservice.dto.episode.query.EpisodeSimpleQueryDto;
 import com.iucyh.novelservice.dto.episode.request.EpisodePagingRequest;
+import com.iucyh.novelservice.dto.episode.response.EpisodeDetailResponse;
 import com.iucyh.novelservice.dto.episode.response.EpisodeResponse;
 import com.iucyh.novelservice.repository.episode.EpisodeRepository;
+import com.iucyh.novelservice.repository.episode.projection.EpisodeDetail;
 import com.iucyh.novelservice.repository.episode.query.EpisodeQueryRepository;
 import com.iucyh.novelservice.repository.novel.NovelRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +43,12 @@ public class EpisodeQueryService {
         List<EpisodeResponse> episodeResponses = mapToEpisodeResponseList(result);
         int lastEpisodeNumber = result.get(result.size() - 1).getEpisodeNumber();
         return EpisodeResponseMapper.toPagingResultDto(episodeResponses, episodeCount, lastEpisodeNumber);
+    }
+
+    public EpisodeDetailResponse findEpisodeDetail(long novelId, int episodeNumber) {
+        EpisodeDetail detail = episodeRepository.findEpisodeDetail(novelId, episodeNumber)
+                .orElseThrow(() -> EpisodeNotFound.withEpisodeNumber(episodeNumber));
+        return EpisodeResponseMapper.toEpisodeDetailResponse(detail);
     }
 
     private List<EpisodeResponse> mapToEpisodeResponseList(List<EpisodeSimpleQueryDto> episodes) {

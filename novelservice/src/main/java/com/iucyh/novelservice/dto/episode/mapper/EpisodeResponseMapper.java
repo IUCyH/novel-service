@@ -5,6 +5,7 @@ import com.iucyh.novelservice.dto.PagingResultDto;
 import com.iucyh.novelservice.dto.episode.query.EpisodeSimpleQueryDto;
 import com.iucyh.novelservice.dto.episode.response.EpisodeDetailResponse;
 import com.iucyh.novelservice.dto.episode.response.EpisodeResponse;
+import com.iucyh.novelservice.repository.episode.projection.EpisodeDetail;
 
 import java.util.List;
 
@@ -38,6 +39,10 @@ public class EpisodeResponseMapper {
 
     public static EpisodeDetailResponse toEpisodeDetailResponse(Episode episode) {
         return new EpisodeDetailResponse(episode.getContent());
+    }
+
+    public static EpisodeDetailResponse toEpisodeDetailResponse(EpisodeDetail episodeDetail) {
+        return new EpisodeDetailResponse(episodeDetail.getContent());
     }
 
     public static PagingResultDto<EpisodeResponse> toPagingResultDto(List<EpisodeResponse> episodes, long totalCount, Integer lastEpisodeNumber) {
