@@ -3,6 +3,7 @@ package com.iucyh.novelservice.testsupport.testfactory.episode;
 import com.iucyh.novelservice.domain.episode.Episode;
 import com.iucyh.novelservice.domain.novel.Novel;
 import com.iucyh.novelservice.dto.episode.query.EpisodeSimpleQueryDto;
+import com.iucyh.novelservice.repository.episode.projection.EpisodeDetail;
 import com.iucyh.novelservice.testsupport.testfactory.novel.NovelEntityTestFactory;
 import org.springframework.test.util.ReflectionTestUtils;
 

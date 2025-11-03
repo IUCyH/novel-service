@@ -1,11 +1,14 @@
 package com.iucyh.novelservice.service.episode;
 
+import com.iucyh.novelservice.common.exception.episode.EpisodeNotFound;
 import com.iucyh.novelservice.common.exception.novel.NovelNotFound;
 import com.iucyh.novelservice.dto.PagingResultDto;
 import com.iucyh.novelservice.dto.episode.query.EpisodeSimpleQueryDto;
 import com.iucyh.novelservice.dto.episode.request.EpisodePagingRequest;
+import com.iucyh.novelservice.dto.episode.response.EpisodeDetailResponse;
 import com.iucyh.novelservice.dto.episode.response.EpisodeResponse;
 import com.iucyh.novelservice.repository.episode.EpisodeRepository;
+import com.iucyh.novelservice.repository.episode.projection.EpisodeDetail;
 import com.iucyh.novelservice.repository.episode.query.EpisodeQueryRepository;
 import com.iucyh.novelservice.repository.novel.NovelRepository;
 import com.iucyh.novelservice.testsupport.testfactory.episode.EpisodeDtoTestFactory;
@@ -15,9 +18,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -105,5 +110,56 @@ public class EpisodeQueryServiceTest {
 
         assertThat(result.getNextCursor())
                 .isEqualTo(dummyQueryDto2.getEpisodeNumber());
+    }
+
+    @Test
+    @DisplayName("특정 소설의 상세 정보 조회에서 쿼리 결과가 Empty 라면 도메인 예외가 발생한다")
+    void failedFindEpisodeDetailWhenQueryResultEmpty() {
+        // given
+        long novelId = 1L;
+        int episodeNumber = 1;
+
+        when(episodeRepository.findEpisodeDetail(novelId, episodeNumber))
+                .thenReturn(Optional.empty());
+
+        // when
+        Throwable throwable = catchThrowable(
+                () -> episodeQueryService.findEpisodeDetail(novelId, episodeNumber)
+        );
+
+        // then
+        assertThat(throwable)
+                .isInstanceOf(EpisodeNotFound.class);
+
+        EpisodeNotFound episodeNotFound = (EpisodeNotFound) throwable;
+        EpisodeNotFound tempEpisodeNotFound = EpisodeNotFound.withEpisodeNumber(episodeNumber);
+
+        assertThat(episodeNotFound.getCauses())
+                .isEqualTo(tempEpisodeNotFound.getCauses());
+    }
+
+    @Test
+    @DisplayName("특정 소설의 상제 정보 조회에서 결과가 올바르게 나온다")
+    void successFindEpisodeDetail() {
+        // given
+        long novelId = 1L;
+        int episodeNumber = 1;
+        String detailContent = "content";
+
+        EpisodeDetail episodeDetail = Mockito.mock(EpisodeDetail.class);
+        when(episodeDetail.getContent())
+                .thenReturn(detailContent);
+
+        when(episodeRepository.findEpisodeDetail(novelId, episodeNumber))
+                .thenReturn(Optional.of(episodeDetail));
+
+        // when
+        EpisodeDetailResponse result = episodeQueryService.findEpisodeDetail(novelId, episodeNumber);
+
+        // then
+        assertThat(result)
+                .isNotNull();
+        assertThat(result.content())
+                .isEqualTo(detailContent);
     }
 }
