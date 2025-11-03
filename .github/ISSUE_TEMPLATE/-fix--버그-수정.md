@@ -1,7 +1,7 @@
 ---
 name: "[fix] 버그 수정"
 about: 버그 수정 시 사용
-title: 'Bug:'
+title: 'Fix:'
 labels: ''
 assignees: ''
 
