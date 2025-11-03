@@ -311,6 +311,57 @@ public class EpisodeRepositoryTest {
                 .isEqualTo(episode.getContent());
     }
 
+    @Test
+    @DisplayName("회차의 조회수 증가 업데이트에서 회차가 삭제되었다면 실패한다")
+    void failedIncreaseViewCountWhenEpisodeIsDeleted() {
+        // given
+        Novel novel = NovelEntityTestFactory.defaultNovel();
+        Episode episode = EpisodeEntityTestFactory.defaultEpisode(novel, 1);
+
+        episode.softDelete();
+        saveDummyData(episode);
+
+        // when
+        episodeRepository.increaseViewCount(episode.getId());
+
+        // then
+        Optional<Episode> foundEpisode = episodeRepository.findById(episode.getId());
+        int expectedViewCount = episode.getViewCount();
+
+        assertThat(foundEpisode).isPresent();
+        assertThat(foundEpisode.get().getViewCount())
+                .isEqualTo(expectedViewCount);
+    }
+
+    @Test
+    @DisplayName("회차의 조회수 증가 업데이트가 성공한다")
+    void successIncreaseViewCount() {
+        // given
+        Novel novel = NovelEntityTestFactory.defaultNovel();
+        Episode episode1 = EpisodeEntityTestFactory.defaultEpisode(novel, 1);
+        Episode episode2 = EpisodeEntityTestFactory.defaultEpisode(novel, 2);
+
+        saveMultipleDummyData(novel, List.of(episode1, episode2));
+
+        // when
+        episodeRepository.increaseViewCount(episode1.getId());
+
+        // then
+        Optional<Episode> foundEpisode1 = episodeRepository.findById(episode1.getId());
+        Optional<Episode> foundEpisode2 = episodeRepository.findById(episode2.getId());
+
+        int episode1ExpectedViewCount = episode1.getViewCount() + 1;
+        int episode2ExpectedViewCount = episode2.getViewCount();
+
+        assertThat(foundEpisode1).isPresent();
+        assertThat(foundEpisode1.get().getViewCount())
+                .isEqualTo(episode1ExpectedViewCount);
+
+        assertThat(foundEpisode2).isPresent();
+        assertThat(foundEpisode2.get().getViewCount())
+                .isEqualTo(episode2ExpectedViewCount);
+    }
+
     private void saveDummyData(Episode episode) {
         novelRepository.save(episode.getNovel());
         episodeRepository.save(episode);
