@@ -2,7 +2,16 @@ package com.iucyh.novelservice.common.util;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.List;
+
 public class IpUtil {
+
+    private static final List<String> IP_HEADERS = List.of(
+            "Proxy-Client-IP",
+            "WL-Proxy-Client-IP",
+            "HTTP_CLIENT_IP",
+            "HTTP_X_FORWARDED_FOR"
+    );
 
     private IpUtil() {}
 
@@ -15,35 +24,11 @@ public class IpUtil {
             return ip;
         }
 
-        if (isEmpty(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-            if (!isEmpty(ip)) {
-                return ip;
-            }
-        }
-
-        if (isEmpty(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-            if (!isEmpty(ip)) {
-                return ip;
-            }
-        }
-
-        if (isEmpty(ip)) {
-            ip = request.getHeader("HTTP_CLIENT_IP");
-            if (!isEmpty(ip)) {
-                return ip;
-            }
-        }
-
-        if (isEmpty(ip)) {
-            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-            if (!isEmpty(ip)) {
-                return ip;
-            }
-        }
-
-        return request.getRemoteAddr() == null ? "0.0.0.0" : request.getRemoteAddr();
+        return IP_HEADERS.stream()
+                .map(request::getHeader)
+                .filter(v -> !isEmpty(v))
+                .findFirst()
+                .orElse(request.getRemoteAddr());
     }
 
     private static boolean isEmpty(String ip) {
