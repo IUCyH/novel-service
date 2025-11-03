@@ -2,6 +2,7 @@ package com.iucyh.novelservice.repository.episode;
 
 import com.iucyh.novelservice.domain.episode.Episode;
 import com.iucyh.novelservice.domain.novel.Novel;
+import com.iucyh.novelservice.repository.episode.projection.EpisodeDetail;
 import com.iucyh.novelservice.repository.novel.NovelRepository;
 import com.iucyh.novelservice.testsupport.annotation.RepositoryTest;
 import com.iucyh.novelservice.testsupport.testfactory.episode.EpisodeEntityTestFactory;
@@ -225,6 +226,89 @@ public class EpisodeRepositoryTest {
 
         // then
         assertThat(result).isEqualTo(2);
+    }
+    
+    @Test
+    @DisplayName("특정 회차의 상세 정보 조회에서 여러 소설이 있어도 선택한 소설의 회차의 정보를 조회한다")
+    void findEpisodeDetailWhenMultipleNovelsExist() {
+        // given
+        Novel novel1 = NovelEntityTestFactory.defaultNovel();
+        Novel novel2 = NovelEntityTestFactory.defaultNovel();
+
+        Episode episode1 = EpisodeEntityTestFactory.defaultEpisode(novel1, 1);
+        Episode episode2 = EpisodeEntityTestFactory.defaultEpisode(novel2, 1);
+
+        saveDummyData(episode1);
+        saveDummyData(episode2);
+
+        // when
+        Optional<EpisodeDetail> result = episodeRepository.findEpisodeDetail(novel1.getId(), episode1.getEpisodeNumber());
+
+        // then
+        assertThat(result)
+                .isPresent();
+        assertThat(result.get().getId())
+                .isEqualTo(episode1.getId());
+    }
+    
+    @Test
+    @DisplayName("특정 회차의 상세 정보 조회에서 여러 에피소드가 있어도 선택한 에피소드의 정보를 조회한다")
+    void findEpisodeDetailWhenMultipleEpisodesExist() {
+        // given
+        Novel novel = NovelEntityTestFactory.defaultNovel();
+        Episode episode1 = EpisodeEntityTestFactory.defaultEpisode(novel, 1);
+        Episode episode2 = EpisodeEntityTestFactory.defaultEpisode(novel, 2);
+
+        saveMultipleDummyData(novel, List.of(episode1, episode2));
+
+        // when
+        Optional<EpisodeDetail> result = episodeRepository.findEpisodeDetail(novel.getId(), episode1.getEpisodeNumber());
+        
+        // then
+        assertThat(result)
+                .isPresent();
+        assertThat(result.get().getId())
+                .isEqualTo(episode1.getId());
+    }
+    
+    @Test
+    @DisplayName("특정 회차의 상세 정보 조회에서 회차가 삭제되었을 때는 조회되지 않는다")
+    void failedFindEpisodeDetailWhenEpisodeIsDeleted() {
+        // given
+        Novel novel = NovelEntityTestFactory.defaultNovel();
+        Episode episode = EpisodeEntityTestFactory.defaultEpisode(novel, 1);
+
+        episode.softDelete();
+        saveDummyData(episode);
+        
+        // when
+        Optional<EpisodeDetail> result = episodeRepository.findEpisodeDetail(novel.getId(), episode.getEpisodeNumber());
+        
+        // then
+        assertThat(result).isEmpty();
+    }
+    
+    @Test
+    @DisplayName("특정 회차의 상세 정보 조회가 성공한다")
+    void successFindEpisodeDetail() {
+        // given
+        Novel novel = NovelEntityTestFactory.defaultNovel();
+        Episode episode = EpisodeEntityTestFactory.defaultEpisode(novel, 1);
+
+        saveDummyData(episode);
+
+        // when
+        Optional<EpisodeDetail> result = episodeRepository.findEpisodeDetail(novel.getId(), episode.getEpisodeNumber());
+        
+        // then
+        assertThat(result)
+                .isPresent();
+
+        EpisodeDetail episodeDetail = result.get();
+        assertThat(episodeDetail.getId())
+                .isEqualTo(episode.getId());
+        assertThat(episodeDetail.getContent())
+                .isEqualTo(episode.getContent());
     }
 
     private void saveDummyData(Episode episode) {
