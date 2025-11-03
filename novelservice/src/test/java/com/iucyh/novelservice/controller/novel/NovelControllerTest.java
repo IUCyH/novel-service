@@ -12,6 +12,8 @@ import com.iucyh.novelservice.dto.novel.CreateNovelDto;
 import com.iucyh.novelservice.dto.novel.NovelPagingRequestDto;
 import com.iucyh.novelservice.dto.novel.NovelSortType;
 import com.iucyh.novelservice.dto.novel.UpdateNovelDto;
+import com.iucyh.novelservice.service.episode.EpisodeQueryService;
+import com.iucyh.novelservice.service.episode.EpisodeService;
 import com.iucyh.novelservice.service.novel.NovelQueryService;
 import com.iucyh.novelservice.service.novel.NovelService;
 import com.iucyh.novelservice.testsupport.testfactory.novel.NovelDtoTestFactory;
@@ -50,6 +52,12 @@ public class NovelControllerTest {
 
     @MockitoBean
     private NovelQueryService novelQueryService;
+
+    @MockitoBean
+    private EpisodeService episodeService;
+
+    @MockitoBean
+    private EpisodeQueryService episodeQueryService;
 
     private static Stream<Arguments> createNovelInvalidCases() {
         String validTitle = "title";
