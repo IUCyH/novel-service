@@ -1,5 +1,6 @@
 package com.iucyh.novelservice.episode.repository.query;
 
+import com.iucyh.novelservice.episode.repository.query.condition.EpisodeSearchCondition;
 import com.iucyh.novelservice.episode.repository.query.dto.EpisodeSimpleQueryDto;
 import com.iucyh.novelservice.episode.repository.query.dto.QEpisodeSimpleQueryDto;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -18,7 +19,7 @@ public class EpisodeQueryRepositoryImpl implements EpisodeQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<EpisodeSimpleQueryDto> findEpisodesByNovelId(long novelId, Integer lastEpisodeNumber, int limit) {
+    public List<EpisodeSimpleQueryDto> findEpisodesByNovelId(long novelId, EpisodeSearchCondition condition) {
         JPAQuery<EpisodeSimpleQueryDto> query = queryFactory
                 .select(new QEpisodeSimpleQueryDto(
                         episode.id,
@@ -35,8 +36,9 @@ public class EpisodeQueryRepositoryImpl implements EpisodeQueryRepository {
                         episode.deletedAt.isNull()
                 )
                 .orderBy(episode.episodeNumber.desc())
-                .limit(limit);
-        if (isNotFirstPage(lastEpisodeNumber)) {
+                .limit(condition.limit());
+        if (isNotFirstPage(condition.lastEpisodeNumber())) {
+            Integer lastEpisodeNumber = condition.lastEpisodeNumber();
             query.where(episode.episodeNumber.lt(lastEpisodeNumber));
         }
 

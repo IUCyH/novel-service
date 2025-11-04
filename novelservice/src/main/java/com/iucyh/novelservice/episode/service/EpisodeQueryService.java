@@ -1,6 +1,7 @@
 package com.iucyh.novelservice.episode.service;
 
 import com.iucyh.novelservice.episode.exception.EpisodeNotFound;
+import com.iucyh.novelservice.episode.repository.query.condition.EpisodeSearchCondition;
 import com.iucyh.novelservice.novel.exception.NovelNotFound;
 import com.iucyh.novelservice.dto.PagingResultDto;
 import com.iucyh.novelservice.episode.web.dto.mapper.EpisodeResponseMapper;
@@ -38,7 +39,8 @@ public class EpisodeQueryService {
             throw new NovelNotFound(novelId);
         }
 
-        List<EpisodeSimpleQueryDto> result = episodeQueryRepository.findEpisodesByNovelId(novelId, request.lastEpisode(), request.limit());
+        EpisodeSearchCondition searchCondition = new EpisodeSearchCondition(request.lastEpisode(), request.limit());
+        List<EpisodeSimpleQueryDto> result = episodeQueryRepository.findEpisodesByNovelId(novelId, searchCondition);
         int episodeCount = episodeRepository.countByNovelId(novelId);
 
         if (result.isEmpty()) {
