@@ -1,7 +1,7 @@
 package com.iucyh.novelservice.novel.repository.query;
 
 import com.iucyh.novelservice.novel.enumtype.NovelCategory;
-import com.iucyh.novelservice.novel.repository.dto.NovelPagingQueryDto;
+import com.iucyh.novelservice.novel.repository.query.dto.NovelPagingQueryDto;
 import com.iucyh.novelservice.novel.repository.query.condition.NovelSearchCondition;
 import com.iucyh.novelservice.novel.repository.query.pagingquery.NovelPagingQuery;
 import com.querydsl.core.types.dsl.BooleanExpression;

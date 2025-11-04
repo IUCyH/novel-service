@@ -1,4 +1,4 @@
-package com.iucyh.novelservice.novel.repository.dto;
+package com.iucyh.novelservice.novel.repository.query.dto;
 
 import com.iucyh.novelservice.novel.domain.Novel;
 
