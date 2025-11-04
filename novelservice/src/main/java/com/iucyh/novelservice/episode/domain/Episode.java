@@ -1,6 +1,6 @@
 package com.iucyh.novelservice.episode.domain;
 
-import com.iucyh.novelservice.domain.DateEntity;
+import com.iucyh.novelservice.common.domain.DateEntity;
 import com.iucyh.novelservice.novel.domain.Novel;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

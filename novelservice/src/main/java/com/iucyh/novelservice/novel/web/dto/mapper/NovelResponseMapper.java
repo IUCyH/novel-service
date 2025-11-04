@@ -1,6 +1,6 @@
 package com.iucyh.novelservice.novel.web.dto.mapper;
 
-import com.iucyh.novelservice.dto.PagingResultDto;
+import com.iucyh.novelservice.common.dto.response.PagingResponse;
 import com.iucyh.novelservice.novel.domain.Novel;
 import com.iucyh.novelservice.novel.web.dto.response.NovelLikeCountResponse;
 import com.iucyh.novelservice.novel.web.dto.response.NovelResponse;
@@ -28,7 +28,7 @@ public class NovelResponseMapper {
         return new NovelLikeCountResponse(likeCount);
     }
 
-    public static PagingResultDto<NovelResponse> toPagingResultDto(List<NovelResponse> novels, long totalCount, String encodedCursor) {
-        return new PagingResultDto<>(totalCount, encodedCursor, novels);
+    public static PagingResponse<NovelResponse> toPagingResultDto(List<NovelResponse> novels, long totalCount, String encodedCursor) {
+        return new PagingResponse<>(totalCount, encodedCursor, novels);
     }
 }

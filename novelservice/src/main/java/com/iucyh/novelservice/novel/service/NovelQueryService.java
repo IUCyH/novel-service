@@ -1,7 +1,7 @@
 package com.iucyh.novelservice.novel.service;
 
 import com.iucyh.novelservice.novel.enumtype.NovelCategory;
-import com.iucyh.novelservice.dto.PagingResultDto;
+import com.iucyh.novelservice.common.dto.response.PagingResponse;
 import com.iucyh.novelservice.novel.web.dto.mapper.NovelResponseMapper;
 import com.iucyh.novelservice.novel.web.dto.response.NovelResponse;
 import com.iucyh.novelservice.novel.web.dto.request.NovelPagingRequest;
@@ -72,28 +72,28 @@ public class NovelQueryService {
         return mapToNovelResponseList(novels);
     }
 
-    public PagingResultDto<NovelResponse> findNovels(NovelPagingRequest pagingRequest) {
+    public PagingResponse<NovelResponse> findNovels(NovelPagingRequest pagingRequest) {
         return executePagingQuery(pagingRequest,
                 (searchCondition, pagingQuery) ->
                         novelQueryRepository.findNovels(searchCondition, pagingQuery)
         );
     }
 
-    public PagingResultDto<NovelResponse> findNovelsByCategory(NovelPagingRequest pagingRequest, NovelCategory category) {
+    public PagingResponse<NovelResponse> findNovelsByCategory(NovelPagingRequest pagingRequest, NovelCategory category) {
         return executePagingQuery(pagingRequest,
                 (searchCondition, pagingQuery) ->
                         novelQueryRepository.findNovelsByCategory(searchCondition, pagingQuery, category)
         );
     }
 
-    public PagingResultDto<NovelResponse> findNewNovels(NovelPagingRequest pagingRequest) {
+    public PagingResponse<NovelResponse> findNewNovels(NovelPagingRequest pagingRequest) {
         return executePagingQuery(pagingRequest,
                 (searchCondition, pagingQuery) ->
                         novelQueryRepository.findNewNovels(searchCondition, pagingQuery)
         );
     }
 
-    private PagingResultDto<NovelResponse> executePagingQuery(
+    private PagingResponse<NovelResponse> executePagingQuery(
             NovelPagingRequest pagingRequest,
             BiFunction<NovelSearchCondition, NovelPagingQuery, List<? extends NovelPagingQueryDto>> queryFunc
     ) {

@@ -1,14 +1,13 @@
-package com.iucyh.novelservice.dto;
+package com.iucyh.novelservice.common.dto.apiresponse;
 
-import com.iucyh.novelservice.common.exception.ErrorCode;
-import com.iucyh.novelservice.common.exception.ServiceException;
+import com.iucyh.novelservice.common.exception.errorcode.ErrorCode;
 import lombok.Getter;
 
 import java.time.Instant;
 import java.util.Map;
 
 @Getter
-public class FailDto {
+public class FailResponse {
 
     private final Boolean isSuccess = false;
     private final Instant timestamp;
@@ -18,21 +17,13 @@ public class FailDto {
     private final String path;
     private final Map<String, Object> causes;
 
-    public FailDto(ErrorCode errorCode, String message, String path, Map<String, Object> causes) {
+    protected FailResponse(ErrorCode errorCode, String message, String path, Map<String, Object> causes) {
         this.timestamp = getCurrentTimeStamp();
         this.status = errorCode.getStatus().value();
         this.code = errorCode.getCode();
         this.message = message;
         this.path = path;
         this.causes = causes == null ? Map.of() : causes;
-    }
-
-    public FailDto(ErrorCode errorCode, String message, String path) {
-        this(errorCode, message, path, null);
-    }
-
-    public static FailDto from(ServiceException e, String path) {
-        return new FailDto(e.getErrorCode(), e.getMessage(), path, e.getCauses());
     }
 
     private Instant getCurrentTimeStamp() {

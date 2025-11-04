@@ -1,5 +1,6 @@
 package com.iucyh.novelservice.common.exception;
 
+import com.iucyh.novelservice.common.exception.errorcode.ErrorCode;
 import lombok.Getter;
 
 import java.util.Map;

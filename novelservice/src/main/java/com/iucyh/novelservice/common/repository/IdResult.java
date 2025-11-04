@@ -1,4 +1,4 @@
-package com.iucyh.novelservice.repository;
+package com.iucyh.novelservice.common.repository;
 
 public interface IdResult {
 

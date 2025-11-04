@@ -1,4 +1,4 @@
-package com.iucyh.novelservice.common.exception;
+package com.iucyh.novelservice.common.exception.errorcode;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

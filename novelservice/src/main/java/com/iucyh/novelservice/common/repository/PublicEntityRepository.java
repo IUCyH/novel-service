@@ -1,4 +1,4 @@
-package com.iucyh.novelservice.repository;
+package com.iucyh.novelservice.common.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;

@@ -3,7 +3,7 @@ package com.iucyh.novelservice.episode.service;
 import com.iucyh.novelservice.episode.exception.EpisodeNotFound;
 import com.iucyh.novelservice.episode.repository.query.condition.EpisodeSearchCondition;
 import com.iucyh.novelservice.novel.exception.NovelNotFound;
-import com.iucyh.novelservice.dto.PagingResultDto;
+import com.iucyh.novelservice.common.dto.response.PagingResponse;
 import com.iucyh.novelservice.episode.web.dto.mapper.EpisodeResponseMapper;
 import com.iucyh.novelservice.episode.repository.query.dto.EpisodeSimpleQueryDto;
 import com.iucyh.novelservice.episode.web.dto.request.EpisodePagingRequest;
@@ -33,7 +33,7 @@ public class EpisodeQueryService {
     private final EpisodeRepository episodeRepository;
     private final EpisodeQueryRepository episodeQueryRepository;
 
-    public PagingResultDto<EpisodeResponse> findEpisodesByNovel(long novelId, EpisodePagingRequest request) {
+    public PagingResponse<EpisodeResponse> findEpisodesByNovel(long novelId, EpisodePagingRequest request) {
         boolean novelExists = novelRepository.existsById(novelId);
         if (!novelExists) {
             throw new NovelNotFound(novelId);

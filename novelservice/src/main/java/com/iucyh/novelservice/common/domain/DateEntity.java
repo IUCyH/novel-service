@@ -1,4 +1,4 @@
-package com.iucyh.novelservice.domain;
+package com.iucyh.novelservice.common.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

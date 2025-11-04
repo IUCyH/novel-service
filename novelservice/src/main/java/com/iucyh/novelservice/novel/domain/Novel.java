@@ -1,6 +1,6 @@
 package com.iucyh.novelservice.novel.domain;
 
-import com.iucyh.novelservice.domain.DateEntity;
+import com.iucyh.novelservice.common.domain.DateEntity;
 import com.iucyh.novelservice.novel.enumtype.NovelCategory;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
