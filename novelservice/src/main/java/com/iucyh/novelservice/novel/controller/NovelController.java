@@ -35,26 +35,26 @@ public class NovelController {
 
     @GetMapping
     public SuccessDto<PagingResultDto<NovelResponse>> getNovels(
-            @Valid @ModelAttribute NovelPagingRequest requestDto
+            @Valid @ModelAttribute NovelPagingRequest request
     ) {
-        PagingResultDto<NovelResponse> results = novelQueryService.findNovels(requestDto);
+        PagingResultDto<NovelResponse> results = novelQueryService.findNovels(request);
         return new SuccessDto<>(results);
     }
 
     @GetMapping("/new")
     public SuccessDto<PagingResultDto<NovelResponse>> getNewNovels(
-            @Valid @ModelAttribute NovelPagingRequest requestDto
+            @Valid @ModelAttribute NovelPagingRequest request
     ) {
-        PagingResultDto<NovelResponse> results = novelQueryService.findNewNovels(requestDto);
+        PagingResultDto<NovelResponse> results = novelQueryService.findNewNovels(request);
         return new SuccessDto<>(results);
     }
 
     @GetMapping("/category/{category}")
     public SuccessDto<PagingResultDto<NovelResponse>> getNovelsByCategory(
             @PathVariable NovelCategory category,
-            @Valid @ModelAttribute NovelPagingRequest requestDto
+            @Valid @ModelAttribute NovelPagingRequest request
     ) {
-        PagingResultDto<NovelResponse> results = novelQueryService.findNovelsByCategory(requestDto, category);
+        PagingResultDto<NovelResponse> results = novelQueryService.findNovelsByCategory(request, category);
         return new SuccessDto<>(results);
     }
 
