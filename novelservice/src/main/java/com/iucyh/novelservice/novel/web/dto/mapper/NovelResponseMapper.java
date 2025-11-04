@@ -1,9 +1,9 @@
-package com.iucyh.novelservice.novel.dto.mapper;
+package com.iucyh.novelservice.novel.web.dto.mapper;
 
 import com.iucyh.novelservice.dto.PagingResultDto;
 import com.iucyh.novelservice.novel.domain.Novel;
-import com.iucyh.novelservice.novel.dto.response.NovelLikeCountResponse;
-import com.iucyh.novelservice.novel.dto.response.NovelResponse;
+import com.iucyh.novelservice.novel.web.dto.response.NovelLikeCountResponse;
+import com.iucyh.novelservice.novel.web.dto.response.NovelResponse;
 
 import java.util.List;
 

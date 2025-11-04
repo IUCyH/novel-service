@@ -2,9 +2,9 @@ package com.iucyh.novelservice.novel.service;
 
 import com.iucyh.novelservice.novel.enumtype.NovelCategory;
 import com.iucyh.novelservice.dto.PagingResultDto;
-import com.iucyh.novelservice.novel.dto.mapper.NovelResponseMapper;
-import com.iucyh.novelservice.novel.dto.response.NovelResponse;
-import com.iucyh.novelservice.novel.dto.request.NovelPagingRequest;
+import com.iucyh.novelservice.novel.web.dto.mapper.NovelResponseMapper;
+import com.iucyh.novelservice.novel.web.dto.response.NovelResponse;
+import com.iucyh.novelservice.novel.web.dto.request.NovelPagingRequest;
 import com.iucyh.novelservice.novel.enumtype.NovelSortType;
 import com.iucyh.novelservice.novel.repository.query.dto.NovelPagingQueryDto;
 import com.iucyh.novelservice.novel.service.codec.NovelCursorBase64Codec;

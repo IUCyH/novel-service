@@ -1,4 +1,4 @@
-package com.iucyh.novelservice.novel.dto.request;
+package com.iucyh.novelservice.novel.web.dto.request;
 
 import com.iucyh.novelservice.common.validator.enumfield.EnumField;
 import com.iucyh.novelservice.novel.enumtype.NovelSortType;

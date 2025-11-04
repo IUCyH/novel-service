@@ -1,4 +1,4 @@
-package com.iucyh.novelservice.novel.dto.response;
+package com.iucyh.novelservice.novel.web.dto.response;
 
 import com.iucyh.novelservice.novel.enumtype.NovelCategory;
 

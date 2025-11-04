@@ -1,4 +1,4 @@
-package com.iucyh.novelservice.novel.controller;
+package com.iucyh.novelservice.novel.web.controller;
 
 import com.iucyh.novelservice.novel.enumtype.NovelCategory;
 import com.iucyh.novelservice.dto.PagingResultDto;
@@ -9,11 +9,11 @@ import com.iucyh.novelservice.dto.episode.request.UpdateEpisodeDetailRequest;
 import com.iucyh.novelservice.dto.episode.request.UpdateEpisodeRequest;
 import com.iucyh.novelservice.dto.episode.response.EpisodeDetailResponse;
 import com.iucyh.novelservice.dto.episode.response.EpisodeResponse;
-import com.iucyh.novelservice.novel.dto.request.CreateNovelRequest;
-import com.iucyh.novelservice.novel.dto.request.NovelPagingRequest;
-import com.iucyh.novelservice.novel.dto.response.NovelLikeCountResponse;
-import com.iucyh.novelservice.novel.dto.request.UpdateNovelRequest;
-import com.iucyh.novelservice.novel.dto.response.NovelResponse;
+import com.iucyh.novelservice.novel.web.dto.request.CreateNovelRequest;
+import com.iucyh.novelservice.novel.web.dto.request.NovelPagingRequest;
+import com.iucyh.novelservice.novel.web.dto.response.NovelLikeCountResponse;
+import com.iucyh.novelservice.novel.web.dto.request.UpdateNovelRequest;
+import com.iucyh.novelservice.novel.web.dto.response.NovelResponse;
 import com.iucyh.novelservice.service.episode.EpisodeQueryService;
 import com.iucyh.novelservice.service.episode.EpisodeService;
 import com.iucyh.novelservice.novel.service.NovelQueryService;
