@@ -8,8 +8,8 @@ public class NovelRequestMapper {
 
     private NovelRequestMapper() {}
 
-    public static Novel toNovel(CreateNovelRequest novelDto) {
-        NovelCategory category = NovelCategory.of(novelDto.category());
-        return Novel.of(novelDto.title(), novelDto.description(), category);
+    public static Novel toNovel(CreateNovelRequest request) {
+        NovelCategory category = NovelCategory.of(request.category());
+        return Novel.of(request.title(), request.description(), category);
     }
 }
