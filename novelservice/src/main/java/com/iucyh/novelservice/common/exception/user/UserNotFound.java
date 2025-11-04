@@ -9,7 +9,6 @@ public class UserNotFound extends ServiceException {
     public UserNotFound(String publicId) {
         super(
                 UserErrorCode.USER_NOT_FOUND,
-                "User not found with this public id",
                 Map.of("userId", publicId)
         );
     }
