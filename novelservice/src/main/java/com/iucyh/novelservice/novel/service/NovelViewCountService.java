@@ -1,6 +1,6 @@
 package com.iucyh.novelservice.novel.service;
 
-import com.iucyh.novelservice.repository.episode.EpisodeRepository;
+import com.iucyh.novelservice.episode.repository.EpisodeRepository;
 import com.iucyh.novelservice.novel.repository.NovelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
