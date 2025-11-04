@@ -1,7 +1,7 @@
 package com.iucyh.novelservice.novel.repository.query;
 
 import com.iucyh.novelservice.novel.enumtype.NovelCategory;
-import com.iucyh.novelservice.novel.repository.query.dto.NovelPagingQueryDto;
+import com.iucyh.novelservice.novel.repository.query.dto.NovelQueryDto;
 import com.iucyh.novelservice.novel.repository.query.condition.NovelSearchCondition;
 import com.iucyh.novelservice.novel.repository.query.pagingquery.NovelPagingQuery;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -21,7 +21,7 @@ public class NovelQueryRepositoryImpl implements NovelQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<? extends NovelPagingQueryDto> findNovels(NovelSearchCondition condition, NovelPagingQuery pagingQuery) {
+    public List<? extends NovelQueryDto> findNovels(NovelSearchCondition condition, NovelPagingQuery pagingQuery) {
         return pagingQuery
                 .createQuery(queryFactory, condition.cursor())
                 .where(getDefaultFilterCondition())
@@ -30,7 +30,7 @@ public class NovelQueryRepositoryImpl implements NovelQueryRepository {
     }
 
     @Override
-    public List<? extends NovelPagingQueryDto> findNovelsByCategory(NovelSearchCondition condition, NovelPagingQuery pagingQuery, NovelCategory category) {
+    public List<? extends NovelQueryDto> findNovelsByCategory(NovelSearchCondition condition, NovelPagingQuery pagingQuery, NovelCategory category) {
         return pagingQuery
                 .createQuery(queryFactory, condition.cursor())
                 .where(
@@ -42,7 +42,7 @@ public class NovelQueryRepositoryImpl implements NovelQueryRepository {
     }
 
     @Override
-    public List<? extends NovelPagingQueryDto> findNewNovels(NovelSearchCondition condition, NovelPagingQuery pagingQuery) {
+    public List<? extends NovelQueryDto> findNewNovels(NovelSearchCondition condition, NovelPagingQuery pagingQuery) {
         LocalDateTime thisMonth = getThisMonth();
         return pagingQuery
                 .createQuery(queryFactory, condition.cursor())

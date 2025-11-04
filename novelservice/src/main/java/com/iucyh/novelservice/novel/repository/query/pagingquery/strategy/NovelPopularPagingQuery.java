@@ -1,11 +1,12 @@
-package com.iucyh.novelservice.novel.repository.query.pagingquery;
+package com.iucyh.novelservice.novel.repository.query.pagingquery.strategy;
 
-import com.iucyh.novelservice.novel.repository.query.dto.NovelPagingQueryDto;
+import com.iucyh.novelservice.novel.repository.query.dto.NovelQueryDto;
 import com.iucyh.novelservice.novel.repository.query.dto.NovelPopularQueryDto;
 import com.iucyh.novelservice.novel.repository.query.dto.QNovelPopularQueryDto;
 import com.iucyh.novelservice.novel.repository.query.cursor.NovelCursor;
 import com.iucyh.novelservice.novel.repository.query.cursor.NovelPopularCursor;
 import com.iucyh.novelservice.novel.enumtype.NovelSortType;
+import com.iucyh.novelservice.novel.repository.query.pagingquery.NovelPagingQueryBaseTemplate;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -21,7 +22,7 @@ import static com.iucyh.novelservice.novel.domain.QNovelPeriodView.novelPeriodVi
 public class NovelPopularPagingQuery extends NovelPagingQueryBaseTemplate {
 
     @Override
-    protected JPAQuery<? extends NovelPagingQueryDto> createBaseQuery(JPAQueryFactory queryFactory) {
+    protected JPAQuery<? extends NovelQueryDto> createBaseQuery(JPAQueryFactory queryFactory) {
         LocalDate threeDaysAgo = LocalDate.now().minusDays(3);
         return queryFactory
                 .select(
@@ -57,7 +58,7 @@ public class NovelPopularPagingQuery extends NovelPagingQueryBaseTemplate {
     }
 
     @Override
-    public NovelCursor createCursor(NovelPagingQueryDto lastResult) {
+    public NovelCursor createCursor(NovelQueryDto lastResult) {
         NovelPopularQueryDto popularQueryDto = (NovelPopularQueryDto) lastResult;
         return new NovelPopularCursor(popularQueryDto.getLastAggId(), popularQueryDto.getLastAggViewCount());
     }

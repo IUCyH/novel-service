@@ -6,7 +6,7 @@ import com.iucyh.novelservice.novel.web.dto.mapper.NovelResponseMapper;
 import com.iucyh.novelservice.novel.web.dto.response.NovelResponse;
 import com.iucyh.novelservice.novel.web.dto.request.NovelPagingRequest;
 import com.iucyh.novelservice.novel.enumtype.NovelSortType;
-import com.iucyh.novelservice.novel.repository.query.dto.NovelPagingQueryDto;
+import com.iucyh.novelservice.novel.repository.query.dto.NovelQueryDto;
 import com.iucyh.novelservice.novel.service.codec.NovelCursorBase64Codec;
 import com.iucyh.novelservice.novel.repository.NovelRepository;
 import com.iucyh.novelservice.novel.repository.query.NovelQueryRepository;
@@ -56,7 +56,7 @@ public class NovelQueryService {
     public List<NovelResponse> findNovelsByCategoryInSummary(NovelCategory category) {
         NovelSearchCondition searchCondition = new NovelSearchCondition(null, 10);
         NovelPagingQuery pagingQuery = getPagingQuery(NovelSortType.POPULAR);
-        List<? extends NovelPagingQueryDto> novels = novelQueryRepository.findNovelsByCategory(searchCondition, pagingQuery, category);
+        List<? extends NovelQueryDto> novels = novelQueryRepository.findNovelsByCategory(searchCondition, pagingQuery, category);
 
         return mapToNovelResponseList(novels);
     }
@@ -67,7 +67,7 @@ public class NovelQueryService {
     public List<NovelResponse> findNewNovelsInSummary() {
         NovelSearchCondition searchCondition = new NovelSearchCondition(null, 30);
         NovelPagingQuery pagingQuery = getPagingQuery(NovelSortType.LAST_UPDATE);
-        List<? extends NovelPagingQueryDto> novels = novelQueryRepository.findNewNovels(searchCondition, pagingQuery);
+        List<? extends NovelQueryDto> novels = novelQueryRepository.findNewNovels(searchCondition, pagingQuery);
 
         return mapToNovelResponseList(novels);
     }
@@ -95,7 +95,7 @@ public class NovelQueryService {
 
     private PagingResponse<NovelResponse> executePagingQuery(
             NovelPagingRequest pagingRequest,
-            BiFunction<NovelSearchCondition, NovelPagingQuery, List<? extends NovelPagingQueryDto>> queryFunc
+            BiFunction<NovelSearchCondition, NovelPagingQuery, List<? extends NovelQueryDto>> queryFunc
     ) {
         NovelSortType sortType = NovelSortType.of(pagingRequest.sort());
         String cursor = pagingRequest.cursor();
@@ -104,7 +104,7 @@ public class NovelQueryService {
         NovelPagingQuery pagingQuery = getPagingQuery(sortType);
         NovelSearchCondition searchCondition = createSearchCondition(sortType, cursor, limit);
 
-        List<? extends NovelPagingQueryDto> result = queryFunc.apply(searchCondition, pagingQuery);
+        List<? extends NovelQueryDto> result = queryFunc.apply(searchCondition, pagingQuery);
         // TODO: 각 조회 조건별 쿼리 세분화 필요, 쿼리 호출 최소화 필요
         long totalCount = novelRepository.countByDeletedAtIsNull();
 
@@ -130,14 +130,14 @@ public class NovelQueryService {
         return new NovelSearchCondition(decodedCursor, limit);
     }
 
-    private List<NovelResponse> mapToNovelResponseList(List<? extends NovelPagingQueryDto> novels) {
+    private List<NovelResponse> mapToNovelResponseList(List<? extends NovelQueryDto> novels) {
         return novels.stream()
                 .map(n -> NovelResponseMapper.toNovelResponse(n.getNovel()))
                 .toList();
     }
 
-    private String createNewEncodedCursor(NovelPagingQuery pagingQuery, List<? extends NovelPagingQueryDto> novels) {
-        NovelPagingQueryDto lastResult = novels.get(novels.size() - 1);
+    private String createNewEncodedCursor(NovelPagingQuery pagingQuery, List<? extends NovelQueryDto> novels) {
+        NovelQueryDto lastResult = novels.get(novels.size() - 1);
         NovelCursor newCursor = pagingQuery.createCursor(lastResult);
         return base64Codec.encode(newCursor);
     }

@@ -1,6 +1,6 @@
 package com.iucyh.novelservice.novel.repository.query.pagingquery;
 
-import com.iucyh.novelservice.novel.repository.query.dto.NovelPagingQueryDto;
+import com.iucyh.novelservice.novel.repository.query.dto.NovelQueryDto;
 import com.iucyh.novelservice.novel.repository.query.cursor.NovelCursor;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -16,7 +16,7 @@ public abstract class NovelPagingQueryBaseTemplate implements NovelPagingQuery {
     /**
      * 정렬 조건, 커서 적용 을 제외한 <b>select/from 등 기본 쿼리 생성 메서드</b>
      */
-    protected abstract JPAQuery<? extends NovelPagingQueryDto> createBaseQuery(JPAQueryFactory queryFactory);
+    protected abstract JPAQuery<? extends NovelQueryDto> createBaseQuery(JPAQueryFactory queryFactory);
 
     /**
      * 각 페이징 전략에 맞는 정렬 기준 생성 메서드
@@ -29,8 +29,8 @@ public abstract class NovelPagingQueryBaseTemplate implements NovelPagingQuery {
     protected abstract BooleanExpression createCursorPredicate(NovelCursor cursor);
 
     @Override
-    public JPAQuery<? extends NovelPagingQueryDto> createQuery(JPAQueryFactory queryFactory, NovelCursor cursor) {
-        JPAQuery<? extends NovelPagingQueryDto> query = createBaseQuery(queryFactory)
+    public JPAQuery<? extends NovelQueryDto> createQuery(JPAQueryFactory queryFactory, NovelCursor cursor) {
+        JPAQuery<? extends NovelQueryDto> query = createBaseQuery(queryFactory)
                 .orderBy(
                         createOrderSpecifiers()
                 );
