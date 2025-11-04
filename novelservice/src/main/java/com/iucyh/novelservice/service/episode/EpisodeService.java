@@ -1,9 +1,9 @@
 package com.iucyh.novelservice.service.episode;
 
 import com.iucyh.novelservice.common.exception.episode.EpisodeNotFound;
-import com.iucyh.novelservice.common.exception.novel.NovelNotFound;
+import com.iucyh.novelservice.novel.exception.NovelNotFound;
 import com.iucyh.novelservice.domain.episode.Episode;
-import com.iucyh.novelservice.domain.novel.Novel;
+import com.iucyh.novelservice.novel.domain.Novel;
 import com.iucyh.novelservice.dto.episode.mapper.EpisodeRequestMapper;
 import com.iucyh.novelservice.dto.episode.mapper.EpisodeResponseMapper;
 import com.iucyh.novelservice.dto.episode.request.CreateEpisodeRequest;
@@ -12,7 +12,7 @@ import com.iucyh.novelservice.dto.episode.request.UpdateEpisodeRequest;
 import com.iucyh.novelservice.dto.episode.response.EpisodeDetailResponse;
 import com.iucyh.novelservice.dto.episode.response.EpisodeResponse;
 import com.iucyh.novelservice.repository.episode.EpisodeRepository;
-import com.iucyh.novelservice.repository.novel.NovelRepository;
+import com.iucyh.novelservice.novel.repository.NovelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

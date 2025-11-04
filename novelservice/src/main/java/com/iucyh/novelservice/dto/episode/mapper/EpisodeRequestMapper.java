@@ -1,7 +1,7 @@
 package com.iucyh.novelservice.dto.episode.mapper;
 
 import com.iucyh.novelservice.domain.episode.Episode;
-import com.iucyh.novelservice.domain.novel.Novel;
+import com.iucyh.novelservice.novel.domain.Novel;
 import com.iucyh.novelservice.dto.episode.request.CreateEpisodeRequest;
 
 public class EpisodeRequestMapper {

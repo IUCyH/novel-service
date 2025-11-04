@@ -1,7 +1,7 @@
 package com.iucyh.novelservice.service.episode;
 
 import com.iucyh.novelservice.common.exception.episode.EpisodeNotFound;
-import com.iucyh.novelservice.common.exception.novel.NovelNotFound;
+import com.iucyh.novelservice.novel.exception.NovelNotFound;
 import com.iucyh.novelservice.dto.PagingResultDto;
 import com.iucyh.novelservice.dto.episode.mapper.EpisodeResponseMapper;
 import com.iucyh.novelservice.dto.episode.query.EpisodeSimpleQueryDto;
@@ -11,8 +11,8 @@ import com.iucyh.novelservice.dto.episode.response.EpisodeResponse;
 import com.iucyh.novelservice.repository.episode.EpisodeRepository;
 import com.iucyh.novelservice.repository.episode.projection.EpisodeDetail;
 import com.iucyh.novelservice.repository.episode.query.EpisodeQueryRepository;
-import com.iucyh.novelservice.repository.novel.NovelRepository;
-import com.iucyh.novelservice.service.novel.NovelViewCountService;
+import com.iucyh.novelservice.novel.repository.NovelRepository;
+import com.iucyh.novelservice.novel.service.NovelViewCountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
