@@ -28,7 +28,7 @@ public class NovelResponseMapper {
         return new NovelLikeCountResponse(likeCount);
     }
 
-    public static PagingResponse<NovelResponse> toPagingResultDto(List<NovelResponse> novels, long totalCount, String encodedCursor) {
+    public static PagingResponse<NovelResponse> toPagingResponse(List<NovelResponse> novels, long totalCount, String encodedCursor) {
         return new PagingResponse<>(totalCount, encodedCursor, novels);
     }
 }

@@ -109,12 +109,12 @@ public class NovelQueryService {
         long totalCount = novelRepository.countByDeletedAtIsNull();
 
         if (result.isEmpty()) {
-            return NovelResponseMapper.toPagingResultDto(List.of(), totalCount, null);
+            return NovelResponseMapper.toPagingResponse(List.of(), totalCount, null);
         }
 
         List<NovelResponse> novelResponses = mapToNovelResponseList(result);
         String newCursor = createNewEncodedCursor(pagingQuery, result);
-        return NovelResponseMapper.toPagingResultDto(novelResponses, totalCount, newCursor);
+        return NovelResponseMapper.toPagingResponse(novelResponses, totalCount, newCursor);
     }
 
     private NovelPagingQuery getPagingQuery(NovelSortType sortType) {
