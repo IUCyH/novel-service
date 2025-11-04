@@ -63,10 +63,4 @@ public class Episode extends DateEntity {
             this.content = content;
         }
     }
-
-    public void addViews(int count) {
-        if (count > 0) {
-            this.viewCount += count;
-        }
-    }
 }
