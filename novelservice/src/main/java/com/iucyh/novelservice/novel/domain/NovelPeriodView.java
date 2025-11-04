@@ -33,10 +33,4 @@ public class NovelPeriodView {
         periodView.novel = novel;
         return periodView;
     }
-
-    public void addViews(int count) {
-        if (count > 0) {
-            this.viewCount += count;
-        }
-    }
 }

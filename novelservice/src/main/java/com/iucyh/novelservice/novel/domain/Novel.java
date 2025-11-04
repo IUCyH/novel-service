@@ -76,12 +76,6 @@ public class Novel extends DateEntity {
         }
     }
 
-    public void addViews(int count) {
-        if (count > 0) {
-            this.totalViewCount += count;
-        }
-    }
-
     public void updateLastEpisodeAt(LocalDateTime lastEpisodeAt) {
         this.lastEpisodeAt = lastEpisodeAt == null ? LocalDateTime.now() : lastEpisodeAt;
     }
