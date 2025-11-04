@@ -44,12 +44,12 @@ public class EpisodeQueryService {
         int episodeCount = episodeRepository.countByNovelId(novelId);
 
         if (result.isEmpty()) {
-            return EpisodeResponseMapper.toPagingResultDto(List.of(), episodeCount, null);
+            return EpisodeResponseMapper.toPagingResponse(List.of(), episodeCount, null);
         }
 
         List<EpisodeResponse> episodeResponses = mapToEpisodeResponseList(result);
         int lastEpisodeNumber = result.get(result.size() - 1).getEpisodeNumber();
-        return EpisodeResponseMapper.toPagingResultDto(episodeResponses, episodeCount, lastEpisodeNumber);
+        return EpisodeResponseMapper.toPagingResponse(episodeResponses, episodeCount, lastEpisodeNumber);
     }
 
     public EpisodeDetailResponse findEpisodeDetail(long novelId, int episodeNumber) {

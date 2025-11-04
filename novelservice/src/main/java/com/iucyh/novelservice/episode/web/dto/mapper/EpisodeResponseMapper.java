@@ -45,7 +45,7 @@ public class EpisodeResponseMapper {
         return new EpisodeDetailResponse(episodeDetail.getContent());
     }
 
-    public static PagingResponse<EpisodeResponse> toPagingResultDto(List<EpisodeResponse> episodes, long totalCount, Integer lastEpisodeNumber) {
+    public static PagingResponse<EpisodeResponse> toPagingResponse(List<EpisodeResponse> episodes, long totalCount, Integer lastEpisodeNumber) {
         return new PagingResponse<>(totalCount, lastEpisodeNumber, episodes);
     }
 }
