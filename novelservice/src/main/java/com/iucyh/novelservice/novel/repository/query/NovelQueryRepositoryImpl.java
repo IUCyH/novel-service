@@ -21,28 +21,28 @@ public class NovelQueryRepositoryImpl implements NovelQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<? extends NovelPagingQueryDto> findNovels(NovelSearchCondition condition, NovelPagingQuery pagingQuery, int limit) {
+    public List<? extends NovelPagingQueryDto> findNovels(NovelSearchCondition condition, NovelPagingQuery pagingQuery) {
         return pagingQuery
                 .createQuery(queryFactory, condition.cursor())
                 .where(getDefaultFilterCondition())
-                .limit(limit)
+                .limit(condition.limit())
                 .fetch();
     }
 
     @Override
-    public List<? extends NovelPagingQueryDto> findNovelsByCategory(NovelSearchCondition condition, NovelPagingQuery pagingQuery, NovelCategory category, int limit) {
+    public List<? extends NovelPagingQueryDto> findNovelsByCategory(NovelSearchCondition condition, NovelPagingQuery pagingQuery, NovelCategory category) {
         return pagingQuery
                 .createQuery(queryFactory, condition.cursor())
                 .where(
                         getDefaultFilterCondition(),
                         novel.category.eq(category)
                 )
-                .limit(limit)
+                .limit(condition.limit())
                 .fetch();
     }
 
     @Override
-    public List<? extends NovelPagingQueryDto> findNewNovels(NovelSearchCondition condition, NovelPagingQuery pagingQuery, int limit) {
+    public List<? extends NovelPagingQueryDto> findNewNovels(NovelSearchCondition condition, NovelPagingQuery pagingQuery) {
         LocalDateTime thisMonth = getThisMonth();
         return pagingQuery
                 .createQuery(queryFactory, condition.cursor())
@@ -50,7 +50,7 @@ public class NovelQueryRepositoryImpl implements NovelQueryRepository {
                         getDefaultFilterCondition(),
                         novel.createdAt.goe(thisMonth)
                 )
-                .limit(limit)
+                .limit(condition.limit())
                 .fetch();
     }
 

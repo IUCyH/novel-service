@@ -54,9 +54,9 @@ public class NovelQueryService {
      * 카테고리 별 소설을 인기순 상위 10개만 조회하는 메서드
      */
     public List<NovelResponse> findNovelsByCategoryInSummary(NovelCategory category) {
-        NovelSearchCondition searchCondition = new NovelSearchCondition(null);
+        NovelSearchCondition searchCondition = new NovelSearchCondition(null, 10);
         NovelPagingQuery pagingQuery = getPagingQuery(NovelSortType.POPULAR);
-        List<? extends NovelPagingQueryDto> novels = novelQueryRepository.findNovelsByCategory(searchCondition, pagingQuery, category, 10);
+        List<? extends NovelPagingQueryDto> novels = novelQueryRepository.findNovelsByCategory(searchCondition, pagingQuery, category);
 
         return mapToNovelResponseList(novels);
     }
@@ -65,34 +65,31 @@ public class NovelQueryService {
      * 이번 달 신작 소설을 업데이트순 상위 30개만 조회하는 메서드
      */
     public List<NovelResponse> findNewNovelsInSummary() {
-        NovelSearchCondition searchCondition = new NovelSearchCondition(null);
+        NovelSearchCondition searchCondition = new NovelSearchCondition(null, 30);
         NovelPagingQuery pagingQuery = getPagingQuery(NovelSortType.LAST_UPDATE);
-        List<? extends NovelPagingQueryDto> novels = novelQueryRepository.findNewNovels(searchCondition, pagingQuery, 30);
+        List<? extends NovelPagingQueryDto> novels = novelQueryRepository.findNewNovels(searchCondition, pagingQuery);
 
         return mapToNovelResponseList(novels);
     }
 
     public PagingResultDto<NovelResponse> findNovels(NovelPagingRequest pagingRequest) {
-        Integer limit = pagingRequest.limit();
         return executePagingQuery(pagingRequest,
                 (searchCondition, pagingQuery) ->
-                        novelQueryRepository.findNovels(searchCondition, pagingQuery, limit)
+                        novelQueryRepository.findNovels(searchCondition, pagingQuery)
         );
     }
 
     public PagingResultDto<NovelResponse> findNovelsByCategory(NovelPagingRequest pagingRequest, NovelCategory category) {
-        Integer limit = pagingRequest.limit();
         return executePagingQuery(pagingRequest,
                 (searchCondition, pagingQuery) ->
-                        novelQueryRepository.findNovelsByCategory(searchCondition, pagingQuery, category, limit)
+                        novelQueryRepository.findNovelsByCategory(searchCondition, pagingQuery, category)
         );
     }
 
     public PagingResultDto<NovelResponse> findNewNovels(NovelPagingRequest pagingRequest) {
-        Integer limit = pagingRequest.limit();
         return executePagingQuery(pagingRequest,
                 (searchCondition, pagingQuery) ->
-                        novelQueryRepository.findNewNovels(searchCondition, pagingQuery, limit)
+                        novelQueryRepository.findNewNovels(searchCondition, pagingQuery)
         );
     }
 
@@ -102,9 +99,10 @@ public class NovelQueryService {
     ) {
         NovelSortType sortType = NovelSortType.of(pagingRequest.sort());
         String cursor = pagingRequest.cursor();
+        Integer limit = pagingRequest.limit();
 
         NovelPagingQuery pagingQuery = getPagingQuery(sortType);
-        NovelSearchCondition searchCondition = createSearchCondition(sortType, cursor);
+        NovelSearchCondition searchCondition = createSearchCondition(sortType, cursor, limit);
 
         List<? extends NovelPagingQueryDto> result = queryFunc.apply(searchCondition, pagingQuery);
         // TODO: 각 조회 조건별 쿼리 세분화 필요, 쿼리 호출 최소화 필요
@@ -127,9 +125,9 @@ public class NovelQueryService {
         return pagingQuery;
     }
 
-    private NovelSearchCondition createSearchCondition(NovelSortType sortType, String encodedCursor) {
+    private NovelSearchCondition createSearchCondition(NovelSortType sortType, String encodedCursor, int limit) {
         NovelCursor decodedCursor = base64Codec.decode(encodedCursor, sortType.getSupportedCursorClass());
-        return new NovelSearchCondition(decodedCursor);
+        return new NovelSearchCondition(decodedCursor, limit);
     }
 
     private List<NovelResponse> mapToNovelResponseList(List<? extends NovelPagingQueryDto> novels) {

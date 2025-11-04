@@ -2,7 +2,7 @@ package com.iucyh.novelservice.novel.repository.query.pagingquery;
 
 import com.iucyh.novelservice.novel.repository.query.dto.NovelPagingQueryDto;
 import com.iucyh.novelservice.novel.repository.query.dto.NovelPopularQueryDto;
-import com.iucyh.novelservice.novel.repository.dto.QNovelPopularQueryDto;
+import com.iucyh.novelservice.novel.repository.query.dto.QNovelPopularQueryDto;
 import com.iucyh.novelservice.novel.repository.query.cursor.NovelCursor;
 import com.iucyh.novelservice.novel.repository.query.cursor.NovelPopularCursor;
 import com.iucyh.novelservice.novel.enumtype.NovelSortType;
