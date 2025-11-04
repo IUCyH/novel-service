@@ -1,6 +1,7 @@
 package com.iucyh.novelservice.episode.exception;
 
 import com.iucyh.novelservice.common.exception.ServiceException;
+import com.iucyh.novelservice.episode.exception.errorcode.EpisodeErrorCode;
 
 import java.util.Map;
 

@@ -1,11 +1,12 @@
-package com.iucyh.novelservice.novel.repository.query.pagingquery;
+package com.iucyh.novelservice.novel.repository.query.pagingquery.strategy;
 
 import com.iucyh.novelservice.novel.domain.Novel;
-import com.iucyh.novelservice.novel.repository.query.dto.NovelPagingQueryDto;
+import com.iucyh.novelservice.novel.repository.query.dto.NovelQueryDto;
 import com.iucyh.novelservice.novel.repository.query.dto.QNovelSimpleQueryDto;
 import com.iucyh.novelservice.novel.repository.query.cursor.NovelCursor;
 import com.iucyh.novelservice.novel.repository.query.cursor.NovelLastUpdateCursor;
 import com.iucyh.novelservice.novel.enumtype.NovelSortType;
+import com.iucyh.novelservice.novel.repository.query.pagingquery.NovelPagingQueryBaseTemplate;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -18,7 +19,7 @@ import static com.iucyh.novelservice.novel.domain.QNovel.novel;
 public class NovelLastUpdatePagingQuery extends NovelPagingQueryBaseTemplate {
 
     @Override
-    protected JPAQuery<? extends NovelPagingQueryDto> createBaseQuery(JPAQueryFactory queryFactory) {
+    protected JPAQuery<? extends NovelQueryDto> createBaseQuery(JPAQueryFactory queryFactory) {
         return queryFactory
                 .select(new QNovelSimpleQueryDto(novel))
                 .from(novel);
@@ -43,7 +44,7 @@ public class NovelLastUpdatePagingQuery extends NovelPagingQueryBaseTemplate {
     }
 
     @Override
-    public NovelCursor createCursor(NovelPagingQueryDto lastResult) {
+    public NovelCursor createCursor(NovelQueryDto lastResult) {
         Novel lastNovel = lastResult.getNovel();
         return new NovelLastUpdateCursor(lastNovel.getId(), lastNovel.getLastEpisodeAt());
     }

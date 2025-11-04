@@ -1,4 +1,4 @@
-package com.iucyh.novelservice.novel.exception;
+package com.iucyh.novelservice.novel.exception.errorcode;
 
 import com.iucyh.novelservice.common.exception.errorcode.ErrorCode;
 import lombok.Getter;

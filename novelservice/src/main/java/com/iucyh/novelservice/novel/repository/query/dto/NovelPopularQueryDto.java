@@ -5,7 +5,7 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 
 @Getter
-public class NovelPopularQueryDto implements NovelPagingQueryDto {
+public class NovelPopularQueryDto implements NovelQueryDto {
 
     private final Novel novel;
     private final long lastAggId;
