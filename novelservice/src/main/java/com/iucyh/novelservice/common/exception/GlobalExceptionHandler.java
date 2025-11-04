@@ -2,12 +2,17 @@ package com.iucyh.novelservice.common.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.iucyh.novelservice.common.dto.apiresponse.ApiResponseMapper;
+import com.iucyh.novelservice.common.dto.apiresponse.information.FailInformation;
+import com.iucyh.novelservice.common.exception.errorcode.CommonErrorCode;
+import com.iucyh.novelservice.common.exception.errorcode.ErrorCode;
 import com.iucyh.novelservice.common.util.IpUtil;
-import com.iucyh.novelservice.dto.FailDto;
+import com.iucyh.novelservice.common.dto.apiresponse.FailResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -40,14 +45,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final ObjectMapper objectMapper;
 
     @ExceptionHandler
-    public ResponseEntity<FailDto> handleServiceException(ServiceException ex, HttpServletRequest req) {
+    public ResponseEntity<FailResponse> handleServiceException(ServiceException ex, HttpServletRequest req) {
         String path = req.getRequestURI();
-        FailDto failDto = FailDto.from(ex, path);
+        FailResponse failResponse = ApiResponseMapper.fail(ex, path);
 
         log(LOG_LEVEL_WARN, req, ex, ex.getCauses());
         return ResponseEntity
                 .status(ex.getErrorCode().getStatus())
-                .body(failDto);
+                .body(failResponse);
     }
 
     @Override
@@ -55,13 +60,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         HttpServletRequest req = getRequest(request);
         ErrorCode errorCode = CommonErrorCode.NO_RESOURCE_FOUND;
 
-        String path = req.getRequestURI();
-        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path);
+        FailInformation info = createFailInformation(errorCode, req);
+        FailResponse failResponse = ApiResponseMapper.fail(info);
 
         log(LOG_LEVEL_INFO, req, ex, null);
         return ResponseEntity
                 .status(errorCode.getStatus())
-                .body(failDto);
+                .body(failResponse);
     }
 
     @Override
@@ -76,50 +81,56 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         causes.put("parameterName", parameterName);
         causes.put("parameterType", parameterType);
 
-        String path = req.getRequestURI();
-        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path, causes);
+        FailInformation info = createFailInformation(errorCode, req);
+        FailResponse failResponse = ApiResponseMapper.fail(info, causes);
 
         log(LOG_LEVEL_INFO, req, ex, causes);
         return ResponseEntity
                 .status(errorCode.getStatus())
-                .body(failDto);
+                .body(failResponse);
     }
 
     @ExceptionHandler
-    public ResponseEntity<FailDto> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, HttpServletRequest req) {
+    public ResponseEntity<FailResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, HttpServletRequest req) {
         ErrorCode errorCode = CommonErrorCode.METHOD_ARGUMENT_TYPE_MISMATCH;
 
-        LinkedHashMap<String, Object> causes = new LinkedHashMap<>();
         String parameterName = ex.getName();
         String parameterType = ex.getRequiredType() == null ? "" : ex.getRequiredType().getSimpleName();
 
+        LinkedHashMap<String, Object> causes = new LinkedHashMap<>();
         causes.put("parameterName", parameterName);
         causes.put("requiredType", parameterType);
 
-        String path = req.getRequestURI();
-        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path, causes);
+        FailInformation info = createFailInformation(errorCode, req);
+        FailResponse failResponse = ApiResponseMapper.fail(info, causes);
 
         log(LOG_LEVEL_INFO, req, ex, causes);
         return ResponseEntity
                 .status(errorCode.getStatus())
-                .body(failDto);
+                .body(failResponse);
     }
 
     @Override
     protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         HttpServletRequest req = getRequest(request);
         ErrorCode errorCode = CommonErrorCode.MISSING_PATH_VARIABLE;
+        boolean isMissingAfterConversion = ex.isMissingAfterConversion();
 
-        String variableName = ex.getVariableName();
-        Map<String, Object> causes = Map.of("missingVariable", variableName);
+        Map<String, Object> causes = null;
+        if (isMissingAfterConversion) {
+            String variableName = ex.getVariableName();
+            causes = Map.of("missingVariable", variableName);
+        }
 
-        String path = req.getRequestURI();
-        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path, causes);
+        FailInformation info = createFailInformation(errorCode, req);
+        FailResponse failResponse = ApiResponseMapper.fail(info, causes);
 
         log(LOG_LEVEL_WARN, req, ex, causes);
+
+        HttpStatus statusCode = isMissingAfterConversion ? errorCode.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
         return ResponseEntity
-                .status(errorCode.getStatus())
-                .body(failDto);
+                .status(statusCode)
+                .body(failResponse);
     }
 
     @Override
@@ -127,13 +138,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         HttpServletRequest req = getRequest(request);
         ErrorCode errorCode = CommonErrorCode.HTTP_MESSAGE_NOT_READABLE;
 
-        String path = req.getRequestURI();
-        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path);
+        FailInformation info = createFailInformation(errorCode, req);
+        FailResponse failResponse = ApiResponseMapper.fail(info);
 
         log(LOG_LEVEL_WARN, req, ex, null); // TODO: 원인이 된 Request Body 로깅
         return ResponseEntity
                 .status(errorCode.getStatus())
-                .body(failDto);
+                .body(failResponse);
     }
 
     @Override
@@ -144,26 +155,50 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         List<LinkedHashMap<String, String>> failedFields = getFailedFields(ex);
         Map<String, Object> fieldErrors = Map.of("fields", failedFields);
 
-        String path = req.getRequestURI();
-        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path, fieldErrors);
+        FailInformation info = createFailInformation(errorCode, req);
+        FailResponse failResponse = ApiResponseMapper.fail(info, fieldErrors);
 
         log(LOG_LEVEL_INFO, req, ex, fieldErrors);
         return ResponseEntity
                 .status(errorCode.getStatus())
-                .body(failDto);
+                .body(failResponse);
     }
 
     @ExceptionHandler
-    public ResponseEntity<FailDto> handleException(Exception ex, HttpServletRequest req) {
+    public ResponseEntity<FailResponse> handleException(Exception ex, HttpServletRequest req) {
         ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
 
-        String path = req.getRequestURI();
-        FailDto failDto = new FailDto(errorCode, errorCode.getDefaultMessage(), path);
+        FailInformation info = createFailInformation(errorCode, req);
+        FailResponse failResponse = ApiResponseMapper.fail(info);
 
         log(LOG_LEVEL_ERROR, req, ex, null);
         return ResponseEntity
                 .status(errorCode.getStatus())
-                .body(failDto);
+                .body(failResponse);
+    }
+
+    private HttpServletRequest getRequest(WebRequest request) {
+        ServletWebRequest servletWebRequest = (ServletWebRequest) request;
+        return servletWebRequest.getRequest();
+    }
+
+    private FailInformation createFailInformation(ErrorCode errorCode, HttpServletRequest req) {
+        String path = req.getRequestURI();
+        return new FailInformation(errorCode, errorCode.getDefaultMessage(), path);
+    }
+
+    private List<LinkedHashMap<String, String>> getFailedFields(MethodArgumentNotValidException ex) {
+        BindingResult bindingResult = ex.getBindingResult();
+        return bindingResult.getFieldErrors().stream()
+                .map((error) -> {
+                    String message = error.getDefaultMessage() == null ? "" : error.getDefaultMessage();
+
+                    LinkedHashMap<String, String> result = new LinkedHashMap<>();
+                    result.put("field", error.getField());
+                    result.put("message", message);
+                    return result;
+                })
+                .toList();
     }
 
     private void log(String level, HttpServletRequest request, Exception ex, Map<String, Object> causes) {
@@ -188,25 +223,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 log.error(LOG_FORMAT, request.getMethod(), request.getRequestURI(), ip, ex.getMessage(), causeMessage, ex);
                 break;
         }
-    }
-
-    private List<LinkedHashMap<String, String>> getFailedFields(MethodArgumentNotValidException ex) {
-        BindingResult bindingResult = ex.getBindingResult();
-        return bindingResult.getFieldErrors().stream()
-                .map((error) -> {
-                    String message = error.getDefaultMessage() == null ? "" : error.getDefaultMessage();
-
-                    LinkedHashMap<String, String> result = new LinkedHashMap<>();
-                    result.put("field", error.getField());
-                    result.put("message", message);
-                    return result;
-                })
-                .toList();
-    }
-
-    private HttpServletRequest getRequest(WebRequest request) {
-        ServletWebRequest servletWebRequest = (ServletWebRequest)request;
-        return servletWebRequest.getRequest();
     }
 }
 
