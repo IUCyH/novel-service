@@ -20,5 +20,6 @@ public abstract class DateAuditEntity {
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 }

@@ -36,6 +36,7 @@ public class NovelPeriodStat {
     private Integer viewCount = 0;
 
     @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
