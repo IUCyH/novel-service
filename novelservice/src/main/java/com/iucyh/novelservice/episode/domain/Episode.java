@@ -1,6 +1,6 @@
 package com.iucyh.novelservice.episode.domain;
 
-import com.iucyh.novelservice.common.domain.DateEntity;
+import com.iucyh.novelservice.common.domain.PublicEntity;
 import com.iucyh.novelservice.novel.domain.Novel;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,22 +10,22 @@ import lombok.NoArgsConstructor;
 import static com.iucyh.novelservice.episode.constant.EpisodeConstants.*;
 
 @Entity
-@Table(name = "episodes")
+@Table(name = "episode")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Episode extends DateEntity {
+public class Episode extends PublicEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = EPISODE_TITLE_LENGTH_MAX)
+    @Column(length = EPISODE_TITLE_LENGTH_MAX, nullable = false)
     private String title;
 
-    @Column(nullable = false, length = EPISODE_DESC_LENGTH_MAX)
+    @Column(length = EPISODE_DESC_LENGTH_MAX, nullable = false)
     private String description;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
     @Column(nullable = false)
@@ -49,7 +49,7 @@ public class Episode extends DateEntity {
     }
 
     public void updateTextMetaData(String title, String description) {
-        if (title != null && !title.isBlank()) {
+        if (title != null) {
             this.title = title;
         }
 
@@ -59,8 +59,6 @@ public class Episode extends DateEntity {
     }
 
     public void updateContent(String content) {
-        if (content != null && !content.isBlank()) {
-            this.content = content;
-        }
+        this.content = content;
     }
 }

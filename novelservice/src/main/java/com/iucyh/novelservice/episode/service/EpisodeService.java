@@ -34,7 +34,7 @@ public class EpisodeService {
         Episode episode = EpisodeRequestMapper.toEpisode(request, novel, nextEpisodeNumber);
 
         Episode savedEpisode = episodeRepository.save(episode);
-        novel.updateLastEpisodeAt(savedEpisode.getCreatedAt());
+        novel.updateLastEpisode(savedEpisode.getEpisodeNumber(), savedEpisode.getCreatedAt());
 
         return EpisodeResponseMapper.toEpisodeResponse(savedEpisode);
     }
