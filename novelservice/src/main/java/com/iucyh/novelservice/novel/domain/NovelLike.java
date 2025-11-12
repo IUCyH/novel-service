@@ -32,4 +32,11 @@ public class NovelLike {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "novel_id", nullable = false)
     private Novel novel;
+
+    public static NovelLike of(User user, Novel novel) {
+        NovelLike novelLike = new NovelLike();
+        novelLike.user = user;
+        novelLike.novel = novel;
+        return novelLike;
+    }
 }
