@@ -1,26 +1,25 @@
 package com.iucyh.novelservice.common.domain;
 
-import com.fasterxml.uuid.Generators;
+import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.PrePersist;
 import lombok.Getter;
-
-import java.util.UUID;
 
 @MappedSuperclass
 @Getter
-public abstract class PublicEntity extends DateEntity {
+public abstract class PublicEntity extends SoftDeleteEntity {
 
     @Column(
-            columnDefinition = "BINARY(16)",
+            length = 25,
             unique = true, nullable = false, updatable = false
     )
-    private UUID publicId = Generators.timeBasedEpochGenerator().generate();
+    private String publicId;
 
-    /**
-     * publicId 를 문자열로 변환 후 하이픈('-') 을 제거한 결과를 반환
-     */
-    public String getPublicIdToString() {
-        return publicId.toString().replace("-", "");
+    @PrePersist
+    protected void setPublicId() {
+        if (publicId == null) {
+            publicId = NanoIdUtils.randomNanoId();
+        }
     }
 }

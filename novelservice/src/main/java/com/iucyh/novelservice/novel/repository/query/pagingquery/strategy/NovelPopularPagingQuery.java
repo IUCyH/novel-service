@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
 import static com.iucyh.novelservice.novel.domain.QNovel.novel;
-import static com.iucyh.novelservice.novel.domain.QNovelPeriodView.novelPeriodView;
+import static com.iucyh.novelservice.novel.domain.QNovelPeriodStat.novelPeriodStat;
 
 @Component
 public class NovelPopularPagingQuery extends NovelPagingQueryBaseTemplate {
@@ -28,32 +28,32 @@ public class NovelPopularPagingQuery extends NovelPagingQueryBaseTemplate {
                 .select(
                         new QNovelPopularQueryDto(
                                 novel,
-                                novelPeriodView.id,
-                                novelPeriodView.viewCount
+                                novelPeriodStat.id,
+                                novelPeriodStat.viewCount
                         )
                 )
-                .from(novelPeriodView)
-                .join(novelPeriodView.novel, novel)
+                .from(novelPeriodStat)
+                .join(novelPeriodStat.novel, novel)
                 .where(
-                        novelPeriodView.startDate.eq(threeDaysAgo)
+                        novelPeriodStat.startDate.eq(threeDaysAgo)
                 );
     }
 
     @Override
     protected OrderSpecifier<?>[] createOrderSpecifiers() {
         return new OrderSpecifier[] {
-                novelPeriodView.viewCount.desc(),
-                novelPeriodView.id.desc()
+                novelPeriodStat.viewCount.desc(),
+                novelPeriodStat.id.desc()
         };
     }
 
     @Override
     protected BooleanExpression createCursorPredicate(NovelCursor cursor) {
         NovelPopularCursor novelPopularCursor = (NovelPopularCursor) cursor;
-        return novelPeriodView.viewCount.lt(novelPopularCursor.lastAggViewCount())
+        return novelPeriodStat.viewCount.lt(novelPopularCursor.lastAggViewCount())
                 .or(
-                        novelPeriodView.viewCount.eq(novelPopularCursor.lastAggViewCount())
-                                .and(novelPeriodView.id.lt(novelPopularCursor.lastAggId()))
+                        novelPeriodStat.viewCount.eq(novelPopularCursor.lastAggViewCount())
+                                .and(novelPeriodStat.id.lt(novelPopularCursor.lastAggId()))
                 );
     }
 

@@ -8,17 +8,17 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "novel_period_views")
+@Table(name = "novel_daily_stats")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class NovelPeriodView {
+public class NovelDailyStat {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, updatable = false)
-    private LocalDate startDate;
+    private LocalDate statDate;
 
     @Column(nullable = false)
     private Integer viewCount = 0;
@@ -27,10 +27,10 @@ public class NovelPeriodView {
     @JoinColumn(name = "novel_id", nullable = false)
     private Novel novel;
 
-    public static NovelPeriodView of(LocalDate startDate, Novel novel) {
-        NovelPeriodView periodView = new NovelPeriodView();
-        periodView.startDate = startDate;
-        periodView.novel = novel;
-        return periodView;
+    public static NovelDailyStat of(LocalDate statDate, Novel novel) {
+        NovelDailyStat stat = new NovelDailyStat();
+        stat.statDate = statDate;
+        stat.novel = novel;
+        return stat;
     }
 }

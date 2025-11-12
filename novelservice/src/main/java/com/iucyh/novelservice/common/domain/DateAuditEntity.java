@@ -13,18 +13,13 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-public abstract class DateEntity {
+public abstract class DateAuditEntity {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
-
-    private LocalDateTime deletedAt;
-
-    public void softDelete() {
-        this.deletedAt = LocalDateTime.now();
-    }
 }
