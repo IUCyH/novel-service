@@ -48,14 +48,14 @@ public class NovelService {
 
     public NovelLikeCountResponse addLikeCount(long userId, long novelId) {
         Novel novel = findNovelWithUserId(userId, novelId);
-        novel.addLikes(1);
+        //novel.addLikes(1);
 
         return NovelResponseMapper.toNovelLikeCountResponse(novel.getLikeCount());
     }
 
     public NovelLikeCountResponse removeLikeCount(long userId, long novelId) {
         Novel novel = findNovelWithUserId(userId, novelId);
-        novel.removeLikes(1);
+        //novel.removeLikes(1);
 
         return NovelResponseMapper.toNovelLikeCountResponse(novel.getLikeCount());
     }
