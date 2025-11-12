@@ -26,10 +26,10 @@ public class NovelPeriodStat {
     @Enumerated(EnumType.STRING)
     private NovelStatPeriodType periodType;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDate startDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDate endDate;
 
     @Column(nullable = false)
@@ -42,11 +42,12 @@ public class NovelPeriodStat {
     @JoinColumn(name = "novel_id", nullable = false)
     private Novel novel;
 
-    public static NovelPeriodStat of(NovelStatPeriodType periodType, LocalDate startDate, LocalDate endDate) {
+    public static NovelPeriodStat of(NovelStatPeriodType periodType, LocalDate startDate, LocalDate endDate, Novel novel) {
         NovelPeriodStat stat = new NovelPeriodStat();
         stat.periodType = periodType;
         stat.startDate = startDate;
         stat.endDate = endDate;
+        stat.novel = novel;
         return stat;
     }
 }
