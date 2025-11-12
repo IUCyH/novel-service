@@ -17,7 +17,7 @@ public class NovelDailyStat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDate statDate;
 
     @Column(nullable = false)
@@ -27,9 +27,10 @@ public class NovelDailyStat {
     @JoinColumn(name = "novel_id", nullable = false)
     private Novel novel;
 
-    public static NovelDailyStat of(LocalDate statDate) {
+    public static NovelDailyStat of(LocalDate statDate, Novel novel) {
         NovelDailyStat stat = new NovelDailyStat();
         stat.statDate = statDate;
+        stat.novel = novel;
         return stat;
     }
 }
