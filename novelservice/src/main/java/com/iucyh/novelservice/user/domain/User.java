@@ -30,9 +30,9 @@ public class User extends PublicEntity {
 
     public static User of(String email, String password, String nickname, String bio) {
         User user = new User();
-        user.email = email;
+        user.email = email.strip();
         user.password = password;
-        user.nickname = nickname;
+        user.nickname = nickname.strip();
         user.bio = bio;
         return user;
     }

@@ -40,7 +40,7 @@ public class Episode extends PublicEntity {
 
     public static Episode of(String title, String description, String content, Integer episodeNumber, Novel novel) {
         Episode episode = new Episode();
-        episode.title = title;
+        episode.title = title.strip();
         episode.description = description;
         episode.content = content;
         episode.episodeNumber = episodeNumber;
@@ -50,7 +50,7 @@ public class Episode extends PublicEntity {
 
     public void updateTextMetaData(String title, String description) {
         if (title != null) {
-            this.title = title;
+            this.title = title.strip();
         }
 
         if (description != null) {

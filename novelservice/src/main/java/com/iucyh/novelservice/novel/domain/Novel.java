@@ -55,7 +55,7 @@ public class Novel extends PublicEntity {
 
     public static Novel of(String title, String description, NovelCategory category, User user) {
         Novel novel = new Novel();
-        novel.title = title;
+        novel.title = title.strip();
         novel.description = description;
         novel.category = category;
         novel.user = user;
@@ -64,7 +64,7 @@ public class Novel extends PublicEntity {
 
     public void updateTextMetaData(String title, String description) {
         if (title != null) {
-            this.title = title;
+            this.title = title.strip();
         }
 
         if (description != null) {
