@@ -22,6 +22,6 @@ public class EnumFieldValidator implements ConstraintValidator<EnumField, String
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return value == null || enumValues.contains(value);
+        return value == null || enumValues.contains(value.trim());
     }
 }
