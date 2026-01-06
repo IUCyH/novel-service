@@ -7,10 +7,10 @@ tone_instructions: >-
 
 early_access: true
 enable_free_tier: true
-collapse_walkthrough: false
 reviews:
   profile: chill
   request_changes_workflow: true
+  collapse_walkthrough: false
   path_filters:
     - "!**/README.md"
   path_instructions:
