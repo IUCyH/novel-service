@@ -13,5 +13,5 @@ public abstract class EpisodeConstants {
     public static final int PROLOGUE_EPISODE_CONTENT_LENGTH_MIN = 100;
     public static final int PROLOGUE_EPISODE_CONTENT_LENGTH_MAX = 20000;
 
-    public static final String EPISODE_CONTENT_SAFE_LIST_KEY = "episode.conten";
+    public static final String EPISODE_CONTENT_SAFE_LIST_KEY = "episode.content";
 }
